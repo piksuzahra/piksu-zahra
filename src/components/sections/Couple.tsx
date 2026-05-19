@@ -110,8 +110,8 @@ export default function Couple() {
   const [brideFull] = useAppText('brideFull', 'Fatimatuzzahroh');
   const [groomDesc] = useAppText('groomDesc', 'Putra pertama bapak Haita\\ndan ibu Tri Artati');
   const [brideDesc] = useAppText('brideDesc', 'Putri pertama bapak Algajali\\ndan ibu Harlina');
-  const [brideIg] = useAppText('brideIg', '@ zahra_fatima');
-  const [groomIg] = useAppText('groomIg', '@ piksu_h');
+  const [brideIg] = useAppText('brideIg', '@ftmtzzahra_');
+  const [groomIg] = useAppText('groomIg', '@___Zouuuu');
   
   const groomInitial = groomName ? groomName[0] : 'P';
   const brideInitial = brideName ? brideName[0] : 'Z';
