@@ -21,6 +21,12 @@ export default function Wishes() {
   const [attendance, setAttendance] = useState('Hadir');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  
+  const stats = {
+    hadir: wishes.filter(w => w.attendance === 'Hadir').length,
+    ragu: wishes.filter(w => w.attendance === 'Ragu-ragu').length,
+    tidak: wishes.filter(w => w.attendance === 'Tidak Hadir').length
+  };
 
   useEffect(() => {
     const q = query(collection(db, 'wishes'), orderBy('created_at', 'desc'));
@@ -77,7 +83,7 @@ export default function Wishes() {
           className="glass-card p-10 md:p-16 relative overflow-hidden h-fit shadow-[0_50px_100px_rgba(0,0,0,0.08)] bg-white/70"
         >
           <div className="absolute top-0 inset-x-0 h-2 bg-gradient-to-r from-transparent via-gold/40 to-transparent"></div>
-          <h3 className="font-serif text-3xl md:text-5xl text-zinc-900 mb-10 drop-shadow-sm font-black tracking-tighter italic">Respon Kehadiran</h3>
+          <h3 className="font-serif text-2xl md:text-4xl text-zinc-900 mb-10 drop-shadow-sm font-black tracking-tighter italic">Respon Kehadiran</h3>
           
           <form onSubmit={handleSubmit} className="flex flex-col gap-10">
             <div className="flex flex-col gap-4">
@@ -111,10 +117,15 @@ export default function Wishes() {
             </div>
             
             <div className="flex flex-col gap-4">
-              <label className="text-[10px] font-black tracking-[0.5em] text-gold uppercase ml-1 opacity-80">Wedding Wishes</label>
+              <div className="flex justify-between items-end">
+                <label className="text-[10px] font-black tracking-[0.5em] text-gold uppercase ml-1 opacity-80">Wedding Wishes</label>
+                <span className={`text-[9px] font-bold uppercase tracking-widest ${message.length > 450 ? 'text-rose' : 'text-zinc-400'}`}>
+                  {message.length} / 500
+                </span>
+              </div>
               <textarea 
                 value={message}
-                onChange={(e) => setMessage(e.target.value)}
+                onChange={(e) => setMessage(e.target.value.slice(0, 500))}
                 placeholder="Send your warmest wishes..." 
                 className="w-full h-44 bg-zinc-50/50 border border-zinc-200/50 p-6 rounded-[var(--radius-premium)] focus:outline-none focus:ring-4 focus:ring-gold/5 focus:border-gold/30 transition-all text-lg font-medium leading-relaxed italic placeholder-zinc-300"
                 required 
@@ -145,13 +156,31 @@ export default function Wishes() {
           transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
           className="flex flex-col h-full max-h-[850px]"
         >
-          <div className="flex justify-between items-end mb-10 px-4">
-            <div>
-              <p className="text-gold text-[9px] font-black tracking-[0.4em] uppercase mb-2">Guest Book</p>
-              <h3 className="font-serif text-3xl md:text-5xl text-zinc-800 drop-shadow-sm font-bold tracking-tight italic">Pesan Doa</h3>
+          <div className="flex flex-col mb-10 px-4 space-y-6">
+            <div className="flex justify-between items-end">
+              <div>
+                <p className="text-gold text-[9px] font-black tracking-[0.4em] uppercase mb-2">Guest Book</p>
+                <h3 className="font-serif text-2xl md:text-4xl text-zinc-800 drop-shadow-sm font-bold tracking-tight italic">Pesan Doa</h3>
+              </div>
+              <div className="bg-white/40 backdrop-blur-xl text-gold border border-gold/10 px-6 py-2 rounded-[var(--radius-minimal)] text-[10px] font-black tracking-[0.3em] uppercase shadow-sm">
+                {wishes.length} Posts
+              </div>
             </div>
-            <div className="bg-white/40 backdrop-blur-xl text-gold border border-gold/10 px-6 py-2 rounded-[var(--radius-minimal)] text-[10px] font-black tracking-[0.3em] uppercase shadow-sm">
-              {wishes.length} Posts
+            
+            {/* Quick RSVP Summary */}
+            <div className="grid grid-cols-3 gap-3">
+              <div className="bg-sage/5 border border-sage/10 p-3 rounded-lg text-center flex flex-col items-center">
+                <span className="text-sage text-lg font-black leading-none">{stats.hadir}</span>
+                <span className="text-[7px] text-sage font-bold uppercase tracking-wider mt-1">Hadir</span>
+              </div>
+              <div className="bg-gold/5 border border-gold/10 p-3 rounded-lg text-center flex flex-col items-center">
+                <span className="text-gold text-lg font-black leading-none">{stats.ragu}</span>
+                <span className="text-[7px] text-gold font-bold uppercase tracking-wider mt-1">Ragu</span>
+              </div>
+              <div className="bg-zinc-50 border border-zinc-200 p-3 rounded-lg text-center flex flex-col items-center">
+                <span className="text-zinc-500 text-lg font-black leading-none">{stats.tidak}</span>
+                <span className="text-[7px] text-zinc-400 font-bold uppercase tracking-wider mt-1">Tidak</span>
+              </div>
             </div>
           </div>
           
@@ -181,7 +210,7 @@ export default function Wishes() {
                        </span>
                     </div>
                   </div>
-                  <p className="text-zinc-600 leading-relaxed font-bold text-lg md:text-xl italic opacity-85">"{wish.message}"</p>
+                  <p className="text-zinc-600 leading-relaxed font-bold text-base md:text-lg italic opacity-85">"{wish.message}"</p>
                   
                   <div className="mt-6 pt-4 border-t border-zinc-100 flex justify-end">
                      <p className="text-[9px] font-black text-zinc-300 tracking-[0.3em] uppercase">

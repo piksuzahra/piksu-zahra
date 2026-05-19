@@ -1,19 +1,72 @@
-import React, { useState } from 'react';
-import { LogOut, Plus, Send, Copy, Check } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { LogOut, Plus, Send, Copy, Check, Trash2 } from 'lucide-react';
+import { db, handleFirestoreError, OperationType } from '../../lib/firebase';
+import { collection, addDoc, query, where, onSnapshot, orderBy, serverTimestamp, updateDoc, doc, deleteDoc } from 'firebase/firestore';
 
 export default function SenderDashboard({ role, onLogout }: { role: string; onLogout: () => void }) {
-  const [guests, setGuests] = useState<{ id: string, name: string, sent: boolean }[]>([
-    { id: '1', name: 'Bapak Budi & Keluarga', sent: false },
-    { id: '2', name: 'Alumni SMA 1', sent: true },
-  ]);
+  const [guests, setGuests] = useState<{ id: string, name: string, sent: boolean }[]>([]);
   const [newName, setNewName] = useState('');
+  const [editingGuest, setEditingGuest] = useState<{ id: string, name: string } | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [isAdding, setIsAdding] = useState(false);
 
-  const addGuest = (e: React.FormEvent) => {
+  useEffect(() => {
+    const q = query(
+      collection(db, 'guests'), 
+      where('role', '==', role),
+      orderBy('created_at', 'desc')
+    );
+    
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const data = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      })) as any[];
+      setGuests(data);
+    }, (error) => {
+      handleFirestoreError(error, OperationType.LIST, 'guests');
+    });
+
+    return () => unsubscribe();
+  }, [role]);
+
+  const addGuest = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newName.trim()) return;
-    setGuests([{ id: Date.now().toString(), name: newName.trim(), sent: false }, ...guests]);
-    setNewName('');
+    if (!newName.trim() || isAdding) return;
+    
+    setIsAdding(true);
+    try {
+      await addDoc(collection(db, 'guests'), {
+        name: newName.trim(),
+        role: role,
+        sent: false,
+        created_at: serverTimestamp()
+      });
+      setNewName('');
+    } catch (err) {
+      handleFirestoreError(err, OperationType.CREATE, 'guests');
+    } finally {
+      setIsAdding(false);
+    }
+  };
+
+  const deleteGuest = async (id: string) => {
+    if (!confirm('Hapus tamu ini?')) return;
+    try {
+      await deleteDoc(doc(db, 'guests', id));
+    } catch (err) {
+      handleFirestoreError(err, OperationType.DELETE, 'guests');
+    }
+  };
+
+  const handleUpdateGuest = async () => {
+    if (!editingGuest || !editingGuest.name.trim()) return;
+    try {
+      await updateDoc(doc(db, 'guests', editingGuest.id), { name: editingGuest.name.trim() });
+      setEditingGuest(null);
+    } catch (err) {
+      handleFirestoreError(err, OperationType.UPDATE, 'guests');
+    }
   };
 
   const getWAUrl = (name: string) => {
@@ -29,9 +82,13 @@ export default function SenderDashboard({ role, onLogout }: { role: string; onLo
     return `https://wa.me/?text=${encodeURIComponent(template)}`;
   };
 
-  const handleSend = (id: string, name: string) => {
-    setGuests(guests.map(g => g.id === id ? { ...g, sent: true } : g));
-    window.open(getWAUrl(name), '_blank');
+  const handleSend = async (id: string, name: string) => {
+    try {
+      await updateDoc(doc(db, 'guests', id), { sent: true });
+      window.open(getWAUrl(name), '_blank');
+    } catch (err) {
+      handleFirestoreError(err, OperationType.UPDATE, 'guests');
+    }
   };
 
   const copyLink = (name: string, id: string) => {
@@ -43,35 +100,35 @@ export default function SenderDashboard({ role, onLogout }: { role: string; onLo
 
   return (
     <div className="min-h-screen bg-zinc-50 font-sans text-zinc-800">
-      <header className="bg-white border-b border-zinc-200 px-6 py-4 flex justify-between items-center sticky top-0 z-50 shadow-sm">
+      <header className="bg-white border-b border-zinc-200 px-6 py-3 flex justify-between items-center sticky top-0 z-50 shadow-sm">
         <div>
-          <h1 className="font-serif text-2xl">Guest Management</h1>
-          <p className="text-sm text-zinc-500 uppercase tracking-wider">Account: {role}</p>
+          <h1 className="font-serif text-lg md:text-xl font-black italic">Guest Management</h1>
+          <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold">Account: {role}</p>
         </div>
-        <button onClick={onLogout} className="flex items-center gap-2 text-zinc-600 hover:text-red-600 transition">
-          <LogOut size={18} />
-          <span className="text-sm font-medium">Logout</span>
+        <button onClick={onLogout} className="flex items-center gap-2 text-zinc-600 hover:text-red-500 transition">
+          <LogOut size={16} />
+          <span className="text-xs font-bold">Logout</span>
         </button>
       </header>
 
       <div className="max-w-4xl mx-auto p-6 mt-4">
         {/* Add Guest Form */}
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-zinc-200 mb-8">
-          <h2 className="text-lg font-medium mb-4">Add New Guest</h2>
-          <form onSubmit={addGuest} className="flex gap-4">
+        <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm border border-zinc-200 mb-6">
+          <h2 className="text-sm font-bold uppercase tracking-widest text-zinc-400 mb-4 italic">Add New Guest</h2>
+          <form onSubmit={addGuest} className="flex flex-col md:flex-row gap-3">
             <input 
                type="text" 
                value={newName}
                onChange={(e) => setNewName(e.target.value)}
                placeholder="Nama Penerima (e.g. Bapak Budi / Teman SMA)" 
-               className="flex-1 border border-zinc-300 rounded-lg p-3 outline-none focus:border-sage"
+               className="flex-1 border border-zinc-200 rounded-lg p-3 outline-none focus:border-sage text-sm"
             />
             <button 
               type="submit"
               disabled={!newName.trim()}
-              className="bg-zinc-800 text-white px-6 py-3 rounded-lg font-medium hover:bg-zinc-700 transition disabled:opacity-50 flex items-center gap-2"
+              className="bg-zinc-900 text-white px-6 py-3 rounded-lg font-black text-xs uppercase tracking-[0.2em] hover:bg-zinc-800 transition disabled:opacity-50 flex items-center justify-center gap-2"
             >
-              <Plus size={18} />
+              <Plus size={16} />
               Add
             </button>
           </form>
@@ -101,7 +158,21 @@ export default function SenderDashboard({ role, onLogout }: { role: string; onLo
                      )}
                    </div>
                    
-                   <div className="flex gap-2 self-end sm:self-auto">
+                    <div className="flex gap-2 self-end sm:self-auto items-center">
+                      <button 
+                        onClick={() => setEditingGuest({ id: guest.id, name: guest.name })}
+                        className="p-2 text-zinc-300 hover:text-zinc-600 rounded-lg transition"
+                        title="Edit Guest"
+                      >
+                        <Plus size={16} className="rotate-45" />
+                      </button>
+                      <button 
+                        onClick={() => deleteGuest(guest.id)}
+                       className="p-2 text-zinc-300 hover:text-red-500 rounded-lg transition"
+                       title="Delete Guest"
+                     >
+                       <Trash2 size={18} />
+                     </button>
                      <button 
                        onClick={() => copyLink(guest.name, guest.id)}
                        className="p-2 text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100 rounded-lg transition"
@@ -127,6 +198,36 @@ export default function SenderDashboard({ role, onLogout }: { role: string; onLo
            )}
         </div>
       </div>
+
+      {/* Edit Guest Modal */}
+      {editingGuest && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setEditingGuest(null)} />
+          <div className="bg-white rounded-2xl p-6 shadow-2xl relative w-full max-w-md">
+            <h3 className="font-serif text-lg mb-6">Edit Nama Tamu</h3>
+            <input 
+              type="text" 
+              value={editingGuest.name} 
+              onChange={(e) => setEditingGuest({...editingGuest, name: e.target.value})}
+              className="w-full border border-zinc-200 rounded-lg p-3 text-sm mb-6"
+            />
+            <div className="flex gap-3">
+              <button 
+                 onClick={() => setEditingGuest(null)}
+                 className="flex-1 px-6 py-3 rounded-xl border border-zinc-200 text-zinc-500 font-bold text-xs uppercase tracking-widest"
+              >
+                Batal
+              </button>
+              <button 
+                 onClick={handleUpdateGuest}
+                 className="flex-1 px-6 py-3 rounded-xl bg-zinc-900 text-white font-bold text-xs uppercase tracking-widest shadow-lg"
+              >
+                Update
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

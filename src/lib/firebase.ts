@@ -14,9 +14,9 @@ async function testConnection() {
   try {
     await getDocFromServer(doc(db, 'test-connection', 'status'));
     console.log("Firebase connected successfully");
-  } catch (error) {
-    if(error instanceof Error && error.message.includes('the client is offline')) {
-      console.error("Please check your Firebase configuration or internet connection.");
+  } catch (error: any) {
+    if (error?.message?.includes('offline') || error?.code === 'unavailable') {
+       console.error("Firebase is offline. This usually means the project configuration is incorrect or the database is not yet ready.");
     }
   }
 }

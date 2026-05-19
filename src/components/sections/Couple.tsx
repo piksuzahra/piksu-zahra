@@ -157,10 +157,10 @@ export default function Couple() {
             transition={{ duration: 1.2, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
             className="text-center md:text-left flex-1 px-4"
           >
-            <h4 className="text-gold font-serif italic text-base md:text-xl mb-4 tracking-[0.3em] font-black uppercase drop-shadow-sm">Mempelai Wanita</h4>
-            <h3 className="font-serif text-4xl md:text-7xl text-zinc-900 mb-8 font-black drop-shadow-md leading-none tracking-tighter italic">{brideFull}</h3>
+            <h4 className="text-gold font-serif italic text-sm md:text-lg mb-4 tracking-[0.3em] font-black uppercase drop-shadow-sm">Mempelai Wanita</h4>
+            <h3 className="font-serif text-3xl md:text-5xl text-zinc-900 mb-8 font-black drop-shadow-md leading-none tracking-tighter italic">{brideFull}</h3>
             <div className="w-20 h-1 bg-gradient-to-r from-gold/40 to-transparent mb-8 hidden md:block rounded-full"></div>
-            <p className="text-lg md:text-xl min-h-[3em] text-zinc-600 font-bold leading-relaxed italic tracking-tight mb-8" dangerouslySetInnerHTML={{ __html: brideDesc ? brideDesc.replace(/\\n/g, '<br/>') : '' }} />
+            <p className="text-base md:text-lg min-h-[3em] text-zinc-600 font-bold leading-relaxed italic tracking-tight mb-8" dangerouslySetInnerHTML={{ __html: brideDesc ? brideDesc.replace(/\\n/g, '<br/>') : '' }} />
             
             <motion.a
               whileHover={{ scale: 1.05, x: 8 }}
@@ -219,10 +219,10 @@ export default function Couple() {
             transition={{ duration: 1.2, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
             className="text-center md:text-right flex-1 px-4"
           >
-            <h4 className="text-gold font-serif italic text-base md:text-xl mb-4 tracking-[0.3em] font-black uppercase drop-shadow-sm">Mempelai Pria</h4>
-            <h3 className="font-serif text-4xl md:text-7xl text-zinc-900 mb-8 font-black drop-shadow-md leading-none tracking-tighter italic">{groomFull}</h3>
+            <h4 className="text-gold font-serif italic text-sm md:text-lg mb-4 tracking-[0.3em] font-black uppercase drop-shadow-sm">Mempelai Pria</h4>
+            <h3 className="font-serif text-3xl md:text-5xl text-zinc-900 mb-8 font-black drop-shadow-md leading-none tracking-tighter italic">{groomFull}</h3>
             <div className="w-20 h-1 bg-gradient-to-l from-gold/40 to-transparent mb-8 hidden md:block ms-auto rounded-full"></div>
-            <p className="text-lg md:text-xl min-h-[3em] text-zinc-600 font-bold leading-relaxed italic tracking-tight mb-8" dangerouslySetInnerHTML={{ __html: groomDesc ? groomDesc.replace(/\\n/g, '<br/>') : '' }} />
+            <p className="text-base md:text-lg min-h-[3em] text-zinc-600 font-bold leading-relaxed italic tracking-tight mb-8" dangerouslySetInnerHTML={{ __html: groomDesc ? groomDesc.replace(/\\n/g, '<br/>') : '' }} />
             
             <motion.a
               whileHover={{ scale: 1.05, x: -8 }}

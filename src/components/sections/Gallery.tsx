@@ -1,37 +1,31 @@
 import { motion, AnimatePresence } from 'motion/react';
 import React, { useState, useRef } from 'react';
-import { X, Upload, Camera } from 'lucide-react';
+import { X, Upload, Camera, Loader2 } from 'lucide-react';
 import SectionTitle from '../SectionTitle';
-import { useGalleryImages } from '../../lib/store';
+import { useGalleryImages, uploadFile } from '../../lib/store';
 import DecorativeSVG from '../DecorativeSVG';
 
 export default function Gallery() {
   const [selectedImg, setSelectedImg] = useState<number | null>(null);
   const [images, setImages] = useGalleryImages();
+  const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleGalleryUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleGalleryUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []) as File[];
     if (files.length === 0) return;
 
-    const newPhotos: string[] = [];
-    let loadedCount = 0;
-
-    files.forEach((file: File) => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        newPhotos.push(reader.result as string);
-        loadedCount++;
-        if (loadedCount === files.length) {
-          setImages([...images, ...newPhotos]);
-        }
-      };
-      reader.readAsDataURL(file);
-    });
-
-    // Reset input
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+    setIsUploading(true);
+    try {
+      const uploadPromises = files.map(file => uploadFile(file, `gallery/${Date.now()}_${file.name}`));
+      const urls = await Promise.all(uploadPromises);
+      setImages([...images, ...urls]);
+    } catch (err) {
+      console.error(err);
+      alert('Gagal mengunggah foto');
+    } finally {
+      setIsUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
     }
   };
 
@@ -65,6 +59,17 @@ export default function Gallery() {
       </div>
 
       <SectionTitle title="Galeri Momen" subtitle="Our Memories" />
+
+      {isUploading && (
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-12 flex items-center gap-4 bg-white/80 backdrop-blur-xl px-8 py-4 rounded-full border border-gold/20 shadow-xl relative z-10"
+        >
+          <Loader2 size={20} className="animate-spin text-gold" />
+          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-900">Menyimpan Momen Bahagia...</span>
+        </motion.div>
+      )}
 
       {/* Masonry Grid Simulation */}
       <div className="columns-2 md:columns-3 gap-4 md:gap-6 space-y-4 md:space-y-6 w-full max-w-5xl mx-auto px-2 mt-12 relative z-10">
@@ -105,9 +110,19 @@ export default function Gallery() {
             className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm"
             onClick={() => setSelectedImg(null)}
           >
-            <button className="absolute top-6 right-6 text-white p-2.5 bg-white/10 rounded-full hover:bg-rose/80 hover:text-white transition-colors duration-300 z-50 cursor-pointer">
-              <X size={24} />
-            </button>
+            {/* Lightbox Controls */}
+            <div className="absolute top-0 inset-x-0 p-6 flex justify-between items-center z-50">
+               <div className="text-white/60 text-[10px] font-black uppercase tracking-[0.3em] bg-black/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
+                 Momen {selectedImg + 1} / {images.length}
+               </div>
+               <button 
+                 onClick={() => setSelectedImg(null)}
+                 className="text-white p-3 bg-white/10 rounded-full hover:bg-rose/80 transition-all duration-300 cursor-pointer shadow-xl border border-white/20"
+               >
+                 <X size={24} />
+               </button>
+            </div>
+            
             <motion.img
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}

@@ -53,24 +53,30 @@ export default function Greeting() {
             initial={{ y: 20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.4 }}
-            className="mb-10"
+            transition={{ duration: 1.2, delay: 0.4 }}
+            className="mb-12"
           >
-            <div className="flex justify-center gap-3 mb-6">
+            <div className="flex justify-center gap-4 mb-8">
                {[...Array(3)].map((_, i) => (
-                 <div key={i} className="w-2 h-2 rounded-full bg-gold/20"></div>
+                 <motion.div 
+                   key={i} 
+                   animate={{ scale: [1, 1.5, 1], opacity: [0.2, 0.5, 0.2] }}
+                   transition={{ duration: 3, delay: i * 0.5, repeat: Infinity }}
+                   className="w-1.5 h-1.5 rounded-full bg-gold"
+                 ></motion.div>
                ))}
             </div>
-            <h2 className="font-serif italic text-3xl md:text-5xl text-zinc-800 drop-shadow-sm font-black tracking-tighter leading-tight">{greetingVerse}</h2>
+            <h2 className="font-serif italic text-4xl md:text-6xl text-zinc-900 drop-shadow-sm font-black tracking-tight leading-tight mb-4">{greetingVerse}</h2>
+            <div className="w-16 h-1 bg-gold/20 mx-auto rounded-full"></div>
           </motion.div>
           
           <motion.div
             initial={{ y: 30, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 1.2, delay: 0.6 }}
+            transition={{ duration: 1.5, delay: 0.6 }}
           >
-            <p className="text-zinc-700 leading-relaxed font-bold text-center text-lg md:text-2xl mb-12 italic tracking-tight opacity-90">
+            <p className="text-zinc-800 leading-[1.8] font-medium text-center text-xl md:text-3xl mb-16 italic tracking-tight opacity-95 max-w-[90%] mx-auto">
               {greetingText}
             </p>
           </motion.div>

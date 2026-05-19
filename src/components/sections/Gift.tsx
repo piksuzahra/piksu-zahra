@@ -39,7 +39,7 @@ export default function Gift() {
            <Copy size={32} strokeWidth={1} />
         </motion.div>
 
-        <p className="font-serif font-black text-3xl text-zinc-900 mb-2 drop-shadow-sm tracking-tighter italic">{lines[0]}</p>
+        <p className="font-serif font-black text-2xl text-zinc-900 mb-2 drop-shadow-sm tracking-tighter italic">{lines[0]}</p>
         <div className="w-12 h-px bg-gold/30 mb-8"></div>
         {lines.slice(1).map((line, i) => (
           <p key={i} className="text-zinc-500 text-[10px] mb-10 font-black tracking-[0.4em] uppercase w-full text-center opacity-80">{line}</p>
@@ -67,7 +67,7 @@ export default function Gift() {
     <section className="py-16 p-6 flex flex-col items-center relative overflow-hidden">
       <SectionTitle title="Kado Digital" subtitle="Tanda Kasih" />
       
-      <p className="max-w-xl text-center text-zinc-600 mb-10 z-10 leading-relaxed text-sm md:text-base font-medium">
+      <p className="max-w-xl text-center text-zinc-600 mb-10 z-10 leading-relaxed text-xs md:text-sm font-medium">
         Doa restu Anda merupakan karunia yang sangat berarti bagi kami. 
         Dan jika memberi adalah ungkapan tanda kasih Anda, Anda dapat memberi kado secara cashless.
       </p>

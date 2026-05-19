@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { db, storage, handleFirestoreError, OperationType } from './firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import firebaseConfig from '../../firebase-applet-config.json';
 
 const defaultGallery = [
   "https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=600&auto=format&fit=crop",

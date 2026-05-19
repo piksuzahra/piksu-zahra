@@ -20,6 +20,18 @@
         "value": { "type": "string", "description": "The value for the configuration key" }
       },
       "required": ["value"]
+    },
+    "Guest": {
+      "title": "Guest",
+      "description": "A guest track for sharing",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Guest name" },
+        "role": { "type": "string", "description": "Who added the guest" },
+        "sent": { "type": "boolean", "description": "Shared status" },
+        "created_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "role", "sent", "created_at"]
     }
   },
   "firestore": {
@@ -30,6 +42,10 @@
     "/config/{configId}": {
       "schema": "AppConfig",
       "description": "Collection of app settings"
+    },
+    "/guests/{guestId}": {
+      "schema": "Guest",
+      "description": "Persistent guest list for sharing"
     }
   }
 }

@@ -19,6 +19,7 @@ export default function Events() {
   const [event2Title] = useAppText('event2Title', 'Resepsi');
   const [event2Time] = useAppText('event2Time', '14.00 - 21.00 WIB');
   const [event2Location] = useAppText('event2Location', 'Gedung Ratu Elok');
+  const [event2Address] = useAppText('event2Address', 'Jl. Raya Utama No. 88, Desa Ratu Elok\nKec. Maju Jaya, Kota Indah, 12345');
   const [event2Entertainment] = useAppText('event2Entertainment', 'NEW YULISA');
 
   const floatVar = {
@@ -84,11 +85,11 @@ export default function Events() {
                   boxShadow: ["0 15px 30px rgba(0,0,0,0.05)", "0 25px 50px rgba(130, 148, 122, 0.2)", "0 15px 30px rgba(0,0,0,0.05)"]
                 }} 
                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }} 
-                className="w-16 h-16 md:w-28 md:h-28 bg-white/60 backdrop-blur-2xl rounded-[var(--radius-premium)] border-[3px] border-white flex flex-col justify-center items-center overflow-hidden relative shadow-2xl"
+                className="w-14 h-14 md:w-24 md:h-24 bg-white/60 backdrop-blur-2xl rounded-3xl border-[2px] border-white flex flex-col justify-center items-center overflow-hidden relative shadow-2xl"
               >
-                <div className="w-full h-1.5 bg-sage absolute top-0"></div>
-                <span className="text-[10px] md:text-xs text-sage font-black uppercase tracking-[0.4em] mt-1">JULI</span>
-                <span className="text-3xl md:text-5xl font-serif font-black text-zinc-900 tracking-tighter">05</span>
+                <div className="w-full h-1 bg-sage absolute top-0"></div>
+                <span className="text-[8px] md:text-[10px] text-sage font-black uppercase tracking-[0.3em] mt-0.5">JULI</span>
+                <span className="text-2xl md:text-4xl font-serif font-black text-zinc-900 tracking-tighter leading-none">05</span>
               </motion.div>
             </div>
             
@@ -101,7 +102,7 @@ export default function Events() {
                  className="glass-card p-10 md:p-16 shadow-[0_40px_80px_rgba(0,0,0,0.06)] border-white/80 shine-effect group"
                >
                 <h4 className="text-sage font-black tracking-[0.5em] uppercase text-[9px] md:text-xs mb-4 opacity-70">The Holy Matrimony</h4>
-                <h3 className="font-serif text-4xl md:text-6xl text-zinc-900 font-bold drop-shadow-sm mb-8 leading-tight italic tracking-tighter">{event1Title || 'Akad Nikah'}</h3>
+                <h3 className="font-serif text-3xl md:text-5xl text-zinc-900 font-bold drop-shadow-sm mb-8 leading-tight italic tracking-tighter">{event1Title || 'Akad Nikah'}</h3>
                 <div className="space-y-6">
                   <div className="flex items-center gap-5 text-zinc-600">
                     <div className="w-12 h-12 rounded-[var(--radius-minimal)] bg-sage/5 flex items-center justify-center text-sage shrink-0 border border-sage/10 group-hover:bg-sage group-hover:text-white transition-all duration-700 shadow-sm">
@@ -141,11 +142,11 @@ export default function Events() {
                   boxShadow: ["0 15px 30px rgba(0,0,0,0.05)", "0 25px 50px rgba(184, 98, 77, 0.2)", "0 15px 30px rgba(0,0,0,0.05)"]
                 }} 
                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }} 
-                className="w-16 h-16 md:w-28 md:h-28 bg-white/60 backdrop-blur-2xl rounded-[var(--radius-premium)] border-[3px] border-white flex flex-col justify-center items-center overflow-hidden relative shadow-2xl"
+                className="w-14 h-14 md:w-24 md:h-24 bg-white/60 backdrop-blur-2xl rounded-3xl border-[2px] border-white flex flex-col justify-center items-center overflow-hidden relative shadow-2xl"
               >
-                <div className="w-full h-1.5 bg-terracotta absolute top-0"></div>
-                <span className="text-[10px] md:text-xs text-terracotta font-black uppercase tracking-[0.4em] mt-1">JULI</span>
-                <span className="text-3xl md:text-5xl font-serif font-black text-zinc-900 tracking-tighter">05</span>
+                <div className="w-full h-1 bg-terracotta absolute top-0"></div>
+                <span className="text-[8px] md:text-[10px] text-terracotta font-black uppercase tracking-[0.3em] mt-0.5">JULI</span>
+                <span className="text-2xl md:text-4xl font-serif font-black text-zinc-900 tracking-tighter leading-none">05</span>
               </motion.div>
             </div>
             
@@ -158,7 +159,7 @@ export default function Events() {
                  className="glass-card p-10 md:p-16 shadow-[0_40px_80px_rgba(0,0,0,0.06)] border-white/80 shine-effect group"
                >
                 <h4 className="text-terracotta font-black tracking-[0.5em] uppercase text-[9px] md:text-xs mb-4 opacity-70">Wedding Celebration</h4>
-                <h3 className="font-serif text-4xl md:text-6xl text-terracotta font-bold drop-shadow-sm mb-8 leading-tight italic tracking-tighter">{event2Title || 'Resepsi'}</h3>
+                <h3 className="font-serif text-3xl md:text-5xl text-terracotta font-bold drop-shadow-sm mb-8 leading-tight italic tracking-tighter">{event2Title || 'Resepsi'}</h3>
                 <div className="space-y-6 md:items-end flex flex-col">
                    <div className="flex items-center md:flex-row-reverse gap-5 text-zinc-600 w-full md:w-auto">
                      <div className="w-12 h-12 rounded-[var(--radius-minimal)] bg-terracotta/5 flex items-center justify-center text-terracotta shrink-0 border border-terracotta/10 group-hover:bg-terracotta group-hover:text-white transition-all duration-700 shadow-sm">
@@ -249,29 +250,33 @@ export default function Events() {
 
       {/* Turut Mengundang */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        whileInView={{ opacity: 1, scale: 1 }}
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-50px" }}
         transition={{ duration: 0.8 }}
-        className="mt-20 max-w-md mx-auto text-center"
+        className="mt-24 max-w-2xl mx-auto text-center w-full px-6"
       >
-        <p className="text-[10px] font-black tracking-[0.4em] text-gold uppercase mb-10 drop-shadow-sm">Turut Mengundang</p>
-        <div className="flex gap-6 justify-center px-4 w-full">
+        <p className="text-[9px] font-black tracking-[0.6em] text-gold uppercase mb-12 drop-shadow-sm flex items-center justify-center gap-4">
+           <span className="w-8 h-px bg-gold/30"></span>
+           Turut Mengundang
+           <span className="w-8 h-px bg-gold/30"></span>
+        </p>
+        <div className="flex flex-col md:flex-row gap-4 md:gap-6 justify-center">
           <motion.button 
-            whileHover={{ scale: 1.05, y: -5 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.02, y: -4, backgroundColor: '#000' }}
+            whileTap={{ scale: 0.98 }}
             onClick={() => setShowGuests('pria')}
-            className="premium-button flex-1 max-w-[180px] py-5 bg-zinc-900 text-white font-black text-[10px] tracking-[0.3em] rounded-[var(--radius-minimal)] uppercase cursor-pointer"
+            className="flex-1 py-4 md:py-6 bg-zinc-900 text-white font-black text-[10px] tracking-[0.4em] rounded-full uppercase cursor-pointer border border-white/5 shadow-2xl transition-all"
           >
-            Keluarga Pria
+            Keluarga Mempelai Pria
           </motion.button>
           <motion.button 
-            whileHover={{ scale: 1.05, y: -5 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.02, y: -4, backgroundColor: '#000' }}
+            whileTap={{ scale: 0.98 }}
             onClick={() => setShowGuests('wanita')}
-            className="premium-button flex-1 max-w-[180px] py-5 bg-zinc-900 text-white font-black text-[10px] tracking-[0.3em] rounded-[var(--radius-minimal)] uppercase cursor-pointer"
+            className="flex-1 py-4 md:py-6 bg-zinc-900 text-white font-black text-[10px] tracking-[0.4em] rounded-full uppercase cursor-pointer border border-white/5 shadow-2xl transition-all"
           >
-            Keluarga Wanita
+            Keluarga Mempelai Wanita
           </motion.button>
         </div>
       </motion.div>

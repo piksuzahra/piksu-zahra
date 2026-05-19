@@ -32,27 +32,33 @@ export default function App() {
 
   useEffect(() => {
     const root = document.documentElement;
+    const body = document.body;
+    
     if (theme === 'ocean') {
       root.style.setProperty('--theme-sage', '#5c8984'); 
       root.style.setProperty('--theme-rose', '#545b77');
       root.style.setProperty('--theme-gold', '#f2d388');
       root.style.setProperty('--theme-terracotta', '#374259');
+      body.style.backgroundColor = '#f0f4f4';
     } else if (theme === 'monochrome') {
       root.style.setProperty('--theme-sage', '#52525b');
       root.style.setProperty('--theme-rose', '#71717a');
       root.style.setProperty('--theme-gold', '#a1a1aa');
       root.style.setProperty('--theme-terracotta', '#3f3f46');
+      body.style.backgroundColor = '#fafafa';
     } else if (theme === 'sunset') {
       root.style.setProperty('--theme-sage', '#c46950'); 
       root.style.setProperty('--theme-rose', '#eeb274');
       root.style.setProperty('--theme-gold', '#f1d18a');
       root.style.setProperty('--theme-terracotta', '#a2423d');
+      body.style.backgroundColor = '#fffaf0';
     } else {
       // Default rustic
       root.style.setProperty('--theme-sage', '#778f64');
       root.style.setProperty('--theme-rose', '#b87573');
       root.style.setProperty('--theme-gold', '#b38510');
       root.style.setProperty('--theme-terracotta', '#b5513a');
+      body.style.backgroundColor = '#FAF8F5';
     }
   }, [theme]);
 
@@ -159,13 +165,25 @@ export default function App() {
         {opened && <Navbar activeSection={activeSection} />}
         
         {opened && (
-          <button
+          <motion.button
+            initial={{ x: -100, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={toggleMusic}
-            className="fixed top-4 left-4 z-50 flex items-center gap-2 bg-white/80 backdrop-blur-md px-3 py-2 rounded-full shadow-[0_4px_15px_rgba(0,0,0,0.1)] border border-rose/20 text-zinc-600 hover:text-black transition-colors"
+            className="fixed top-4 left-4 z-50 flex items-center justify-center bg-white/80 backdrop-blur-md w-12 h-12 rounded-full shadow-xl border border-rose/10 text-zinc-600 hover:text-black transition-all"
           >
-            {isPlaying ? <Volume2 size={18} /> : <VolumeX size={18} />}
-            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-900">Can't Help Falling in Love</span>
-          </button>
+            <div className={`relative ${isPlaying ? 'animate-pulse' : ''}`}>
+              {isPlaying ? <Volume2 size={20} className="text-gold" /> : <VolumeX size={20} />}
+              {isPlaying && (
+                <motion.div 
+                  animate={{ scale: [1, 1.5, 1], opacity: [0.3, 0, 0.3] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="absolute inset-0 bg-gold/20 rounded-full"
+                />
+              )}
+            </div>
+          </motion.button>
         )}
         <audio ref={audioRef} src={bgMusic || ''} loop />
       </motion.div>

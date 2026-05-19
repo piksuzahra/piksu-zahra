@@ -60,7 +60,7 @@ export default function Location() {
             <div className="absolute bottom-0 inset-x-0 h-64 bg-gradient-to-t from-white via-white/90 to-transparent pointer-events-none z-10"></div>
             
             <div className="absolute bottom-10 inset-x-8 text-center z-20">
-              <h4 className="font-serif text-3xl md:text-4xl font-black text-zinc-900 mb-8 drop-shadow-sm tracking-tight italic">Gedung Ratu Elok</h4>
+              <h4 className="font-serif text-2xl md:text-3xl font-black text-zinc-900 mb-8 drop-shadow-sm tracking-tight italic">Gedung Ratu Elok</h4>
               <motion.a 
                 href={mapUrl || '#'}
                 target="_blank"

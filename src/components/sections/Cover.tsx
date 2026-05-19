@@ -213,8 +213,8 @@ export default function Cover({ onOpen }: { onOpen: () => void }) {
             transition={{ delay: 1.8, duration: 1.2 }}
             className="flex flex-col items-center"
           >
-            <div className="inline-block px-10 py-3.5 border border-gold/40 backdrop-blur-xl rounded-[var(--radius-premium)] bg-black/40 shadow-2xl ring-1 ring-white/10">
-              <p className="font-serif tracking-[0.3em] text-[9px] md:text-sm font-black uppercase text-gold drop-shadow-md">
+            <div className="inline-block px-5 py-1.5 border border-gold/40 backdrop-blur-xl rounded-full bg-black/40 shadow-2xl ring-1 ring-white/10">
+              <p className="font-serif tracking-[0.2em] text-[10px] md:text-xs font-black uppercase text-gold drop-shadow-md">
                 {displayDate}
               </p>
             </div>
@@ -225,10 +225,10 @@ export default function Cover({ onOpen }: { onOpen: () => void }) {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 2.5, duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
-          className="w-full flex flex-col items-center pointer-events-auto mt-auto mb-4 md:mb-10"
+          className="w-full flex flex-col items-center pointer-events-auto mt-auto mb-2 md:mb-4 pb-2 md:pb-6"
         >
           {/* Authentic Label Card */}
-          <div className="glass-card shadow-[0_40px_100px_rgba(0,0,0,0.6)] p-8 md:p-14 min-w-[300px] max-w-[380px] md:max-w-[420px] mb-8 md:mb-12 relative flex flex-col items-center text-center group transition-all duration-1000 border-white/20 hover:border-gold/50 hover:shadow-gold/20 bg-black/30">
+          <div className="glass-card shadow-[0_40px_100px_rgba(0,0,0,0.6)] p-6 md:p-10 min-w-[300px] max-w-[380px] md:max-w-[420px] mb-6 md:mb-8 relative flex flex-col items-center text-center group transition-all duration-1000 border-white/20 hover:border-gold/50 hover:shadow-gold/20 bg-black/30">
             {/* Elegant Corner Decorative Elements */}
             <div className="absolute top-2 left-2 w-8 h-8 border-t-2 border-l-2 border-gold/30 rounded-tl-xl transition-all duration-1000 group-hover:w-12 group-hover:h-12 group-hover:border-gold/60"></div>
             <div className="absolute top-2 right-2 w-8 h-8 border-t-2 border-r-2 border-gold/30 rounded-tr-xl transition-all duration-1000 group-hover:w-12 group-hover:h-12 group-hover:border-gold/60"></div>
@@ -239,16 +239,16 @@ export default function Cover({ onOpen }: { onOpen: () => void }) {
               initial={{ opacity: 0.6 }}
               animate={{ opacity: [0.6, 1, 0.6] }}
               transition={{ duration: 4, repeat: Infinity }}
-              className="text-gold text-[8px] md:text-[10px] tracking-[0.5em] font-black mb-6 md:mb-8 uppercase relative z-10 w-full"
+              className="text-gold text-[8px] md:text-[10px] tracking-[0.5em] font-black mb-4 md:mb-6 uppercase relative z-10 w-full"
             >
               Special Invitation To:
             </motion.p>
             
-            <h3 className="text-white font-serif text-3xl md:text-6xl font-black truncate relative z-10 max-w-full px-2 tracking-tighter drop-shadow-2xl italic leading-none">
+            <h3 className="text-white font-serif text-3xl md:text-5xl font-black truncate relative z-10 max-w-full px-2 tracking-tighter drop-shadow-2xl italic leading-none">
               {recipientName}
             </h3>
             
-            <div className="mt-8 md:mt-10 flex items-center gap-4">
+            <div className="mt-6 md:mt-8 flex items-center gap-4">
                <div className="w-8 md:w-12 h-px bg-gradient-to-r from-transparent to-gold/40"></div>
                <div className="w-2 md:w-3 h-2 md:h-3 rotate-45 bg-gold shadow-[0_0_15px_rgba(212,175,55,0.7)]"></div>
                <div className="w-8 md:w-12 h-px bg-gradient-to-l from-transparent to-gold/40"></div>
@@ -268,7 +268,7 @@ export default function Cover({ onOpen }: { onOpen: () => void }) {
             whileHover={{ scale: 1.05, y: -10 }}
             whileTap={{ scale: 0.95 }}
             onClick={onOpen}
-            className="group px-16 md:px-24 py-5 md:py-7 bg-white text-zinc-900 font-black tracking-[0.5em] rounded-[var(--radius-minimal)] transition-all text-[10px] md:text-sm uppercase cursor-pointer flex items-center gap-4 overflow-hidden relative ring-2 ring-white/40 shadow-2xl"
+            className="group px-16 md:px-24 py-5 md:py-7 bg-white text-zinc-900 font-black tracking-[0.5em] rounded-full transition-all text-[10px] md:text-sm uppercase cursor-pointer flex items-center gap-4 overflow-hidden relative ring-2 ring-white/40 shadow-2xl"
           >
             <span className="relative z-10 flex items-center gap-3">
                Buka Undangan
