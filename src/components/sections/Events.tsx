@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { useState } from 'react';
-import { X, Clock, MapPin, Music } from 'lucide-react';
+import { X, Clock, MapPin, Music, Sparkles } from 'lucide-react';
 import SectionTitle from '../SectionTitle';
 import Countdown from './Countdown';
 import DecorativeSVG from '../DecorativeSVG';
@@ -57,10 +57,14 @@ export default function Events() {
   ];
 
   return (
-    <section className="py-16 px-6 relative overflow-hidden flex flex-col items-center">
+    <section id="acara" className="py-16 md:py-24 px-6 relative overflow-hidden flex flex-col items-center">
       <DecorativeSVG />
-      <div className="w-full relative z-10">
-         <SectionTitle title={eventsTitle || "Rangkaian Acara"} subtitle={eventsSubtitle || "Waktu & Tempat"} />
+      <div className="relative z-20 w-full text-center">
+        <SectionTitle 
+          title={eventsTitle || "Rangkaian Acara"} 
+          subtitle={eventsSubtitle || "The Celebration"} 
+          icon={<Sparkles size={44} strokeWidth={1} />}
+        />
       </div>
 
       <Countdown />
@@ -69,7 +73,7 @@ export default function Events() {
         {/* Timeline Line */}
         <div className="absolute left-[31px] md:left-1/2 top-10 bottom-10 w-[2px] bg-gradient-to-b from-transparent via-gold/40 to-transparent md:-translate-x-1/2 hidden md:block"></div>
 
-        <div className="space-y-16 md:space-y-32">
+        <div className="space-y-10 md:space-y-20">
           {/* Akad */}
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
@@ -82,44 +86,44 @@ export default function Events() {
               <motion.div 
                 animate={{ 
                   y: [0, -12, 0],
-                  boxShadow: ["0 15px 30px rgba(0,0,0,0.05)", "0 25px 50px rgba(212, 175, 55, 0.2)", "0 15px 30px rgba(0,0,0,0.05)"]
+                  boxShadow: ["0 15px 30px rgba(0,0,0,0.5)", "0 25px 50px rgba(212, 175, 55, 0.2)", "0 15px 30px rgba(0,0,0,0.5)"]
                 }} 
                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }} 
-                className="w-14 h-14 md:w-24 md:h-24 bg-white/60 backdrop-blur-2xl rounded-3xl border-[2px] border-white flex flex-col justify-center items-center overflow-hidden relative shadow-2xl hover:border-gold/30 transition-colors"
+                className="w-20 h-16 md:w-28 md:h-20 bg-black/40 backdrop-blur-2xl rounded-[var(--radius-minimal)] border-[2px] border-gold/40 flex flex-col justify-center items-center overflow-hidden relative shadow-2xl hover:border-gold transition-colors"
               >
                 <div className="w-full h-1 bg-gold absolute top-0"></div>
-                <span className="text-[8px] md:text-[10px] text-zinc-500 font-black uppercase tracking-[0.3em] mt-0.5">JULI</span>
-                <span className="text-2xl md:text-4xl font-serif font-black text-zinc-900 tracking-tighter leading-none">05</span>
+                <span className="text-sm md:text-xl text-white/50 font-black uppercase tracking-[0.3em] mt-0.5">JULI</span>
+                <span className="text-2xl md:text-5xl font-serif font-black text-white tracking-widest leading-none">05</span>
               </motion.div>
             </div>
             
             <div className="pl-24 md:pl-0 md:w-1/2 pt-2 text-left relative">
-               <div className="absolute left-7 md:left-auto md:-left-[10px] top-10 w-5 h-5 rounded-[var(--radius-minimal)] bg-white border-4 border-gold shadow-xl z-30 hidden md:block"></div>
+               <div className="absolute left-7 md:left-auto md:-left-[10px] top-10 w-5 h-5 rounded-[var(--radius-minimal)] bg-[#5c1011] border-4 border-gold shadow-xl z-30 hidden md:block"></div>
                <motion.div 
                  initial={{ opacity: 0, x: 20 }}
                  whileInView={{ opacity: 1, x: 0 }}
                  transition={{ delay: 0.3, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                 className="glass-card p-10 md:p-16 shadow-[0_40px_80px_rgba(0,0,0,0.06)] border-white/80 shine-effect group"
+                 className="p-10 md:p-16 shadow-[0_40px_100px_rgba(0,0,0,0.5)] border border-gold/30 backdrop-blur-md bg-black/40 rounded-[var(--radius-premium)] shine-effect group"
                >
-                <h4 className="text-gold font-black tracking-[0.5em] uppercase text-[9px] md:text-xs mb-4 opacity-90 drop-shadow-sm">The Holy Matrimony</h4>
-                <h3 className="font-serif text-3xl md:text-5xl text-zinc-900 font-bold drop-shadow-sm mb-8 leading-tight italic tracking-tighter">{event1Title || 'Akad Nikah'}</h3>
+                <h4 className="text-gold font-black tracking-[0.4em] md:tracking-[0.7em] uppercase text-sm md:text-2xl mb-2 md:mb-4 opacity-90 drop-shadow-sm">The Holy Matrimony</h4>
+                <h3 className="font-serif text-3xl md:text-5xl text-white font-bold drop-shadow-md mb-8 leading-tight italic tracking-widest">{event1Title || 'Akad Nikah'}</h3>
                 <div className="space-y-6">
-                  <div className="flex items-center gap-5 text-zinc-600">
-                    <div className="w-12 h-12 rounded-[var(--radius-minimal)] bg-gold/5 flex items-center justify-center text-gold shrink-0 border border-gold/20 group-hover:bg-gold group-hover:text-zinc-900 transition-all duration-700 shadow-sm">
+                  <div className="flex items-center gap-5 text-white/70">
+                    <div className="w-12 h-12 rounded-[var(--radius-minimal)] bg-gold/10 flex items-center justify-center text-gold shrink-0 border border-gold/20 group-hover:bg-gold group-hover:text-[#5c1011] transition-all duration-700 shadow-sm">
                       <Clock size={20} />
                     </div>
                     <div>
-                        <p className="text-[9px] text-zinc-400 font-black uppercase tracking-[0.2em] mb-1">Waktu</p>
-                        <p className="font-black text-lg md:text-xl tracking-tight text-zinc-800 italic">{event1Time}</p>
+                        <p className="text-xs md:text-lg text-gold/70 font-black uppercase tracking-[0.2em] mb-1">Waktu</p>
+                        <p className="font-black text-lg md:text-xl tracking-tight text-white italic">{event1Time}</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-5 text-zinc-600">
-                    <div className="w-12 h-12 rounded-[var(--radius-minimal)] bg-gold/5 flex items-center justify-center text-gold shrink-0 border border-gold/20 group-hover:bg-gold group-hover:text-zinc-900 transition-all duration-700 shadow-sm">
+                  <div className="flex items-center gap-5 text-white/70">
+                    <div className="w-12 h-12 rounded-[var(--radius-minimal)] bg-gold/10 flex items-center justify-center text-gold shrink-0 border border-gold/20 group-hover:bg-gold group-hover:text-[#5c1011] transition-all duration-700 shadow-sm">
                       <MapPin size={20} />
                     </div>
                     <div>
-                        <p className="text-[9px] text-zinc-400 font-black uppercase tracking-[0.2em] mb-1">Lokasi</p>
-                        <p className="font-bold text-base md:text-lg leading-relaxed italic text-zinc-700 tracking-tight">{event1Location}</p>
+                        <p className="text-xs md:text-lg text-gold/70 font-black uppercase tracking-[0.2em] mb-1">Lokasi</p>
+                        <p className="font-bold text-base md:text-lg leading-relaxed italic text-white/90 tracking-tight">{event1Location}</p>
                     </div>
                   </div>
                 </div>
@@ -139,53 +143,53 @@ export default function Events() {
               <motion.div 
                 animate={{ 
                   y: [0, 12, 0],
-                  boxShadow: ["0 15px 30px rgba(0,0,0,0.05)", "0 25px 50px rgba(212, 175, 55, 0.2)", "0 15px 30px rgba(0,0,0,0.05)"]
+                  boxShadow: ["0 15px 30px rgba(0,0,0,0.5)", "0 25px 50px rgba(212, 175, 55, 0.2)", "0 15px 30px rgba(0,0,0,0.5)"]
                 }} 
                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }} 
-                className="w-14 h-14 md:w-24 md:h-24 bg-white/60 backdrop-blur-2xl rounded-3xl border-[2px] border-white flex flex-col justify-center items-center overflow-hidden relative shadow-2xl hover:border-gold/30 transition-colors"
+                className="w-20 h-16 md:w-28 md:h-20 bg-black/40 backdrop-blur-2xl rounded-[var(--radius-minimal)] border-[2px] border-gold/40 flex flex-col justify-center items-center overflow-hidden relative shadow-2xl hover:border-gold transition-colors"
               >
                 <div className="w-full h-1 bg-gold absolute top-0"></div>
-                <span className="text-[8px] md:text-[10px] text-zinc-500 font-black uppercase tracking-[0.3em] mt-0.5">JULI</span>
-                <span className="text-2xl md:text-4xl font-serif font-black text-zinc-900 tracking-tighter leading-none">05</span>
+                <span className="text-sm md:text-xl text-white/50 font-black uppercase tracking-[0.3em] mt-0.5">JULI</span>
+                <span className="text-2xl md:text-5xl font-serif font-black text-white tracking-widest leading-none">05</span>
               </motion.div>
             </div>
             
             <div className="pl-24 md:pl-0 md:w-1/2 pt-2 text-left md:text-right relative">
-               <div className="absolute left-7 md:auto md:-right-[10px] top-10 w-5 h-5 rounded-[var(--radius-minimal)] bg-white border-4 border-gold shadow-xl z-30 hidden md:block"></div>
+               <div className="absolute left-7 md:auto md:-right-[10px] top-10 w-5 h-5 rounded-[var(--radius-minimal)] bg-[#5c1011] border-4 border-gold shadow-xl z-30 hidden md:block"></div>
                <motion.div 
                  initial={{ opacity: 0, x: -20 }}
                  whileInView={{ opacity: 1, x: 0 }}
                  transition={{ delay: 0.5, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                 className="glass-card p-10 md:p-16 shadow-[0_40px_80px_rgba(0,0,0,0.06)] border-white/80 shine-effect group"
+                 className="p-10 md:p-16 shadow-[0_40px_100px_rgba(0,0,0,0.5)] border border-gold/30 backdrop-blur-md bg-black/40 rounded-[var(--radius-premium)] shine-effect group"
                >
-                <h4 className="text-gold font-black tracking-[0.5em] uppercase text-[9px] md:text-xs mb-4 opacity-90 drop-shadow-sm">Wedding Celebration</h4>
-                <h3 className="font-serif text-3xl md:text-5xl text-zinc-900 font-bold drop-shadow-sm mb-8 leading-tight italic tracking-tighter">{event2Title || 'Resepsi'}</h3>
+                <h4 className="text-gold font-black tracking-[0.4em] md:tracking-[0.7em] uppercase text-sm md:text-2xl mb-2 md:mb-4 opacity-90 drop-shadow-sm">Wedding Celebration</h4>
+                <h3 className="font-serif text-3xl md:text-5xl text-white font-bold drop-shadow-md mb-8 leading-tight italic tracking-widest">{event2Title || 'Resepsi'}</h3>
                 <div className="space-y-6 md:items-end flex flex-col">
-                   <div className="flex items-center md:flex-row-reverse gap-5 text-zinc-600 w-full md:w-auto">
-                     <div className="w-12 h-12 rounded-[var(--radius-minimal)] bg-gold/10 flex items-center justify-center text-gold shrink-0 border border-gold/20 group-hover:bg-gold group-hover:text-zinc-900 transition-all duration-700 shadow-sm">
+                   <div className="flex items-center md:flex-row-reverse gap-5 text-white/70 w-full md:w-auto">
+                     <div className="w-12 h-12 rounded-[var(--radius-minimal)] bg-gold/10 flex items-center justify-center text-gold shrink-0 border border-gold/20 group-hover:bg-gold group-hover:text-[#5c1011] transition-all duration-700 shadow-sm">
                        <Clock size={20} />
                      </div>
                      <div>
-                         <p className="text-[9px] text-zinc-400 font-black uppercase tracking-[0.2em] mb-1 md:text-right">Waktu</p>
-                         <p className="font-black text-lg md:text-xl tracking-tight text-zinc-800 italic">{event2Time}</p>
+                         <p className="text-xs md:text-lg text-gold/70 font-black uppercase tracking-[0.2em] mb-1 md:text-right">Waktu</p>
+                         <p className="font-black text-lg md:text-xl tracking-tight text-white italic">{event2Time}</p>
                      </div>
                    </div>
-                   <div className="flex items-center md:flex-row-reverse gap-5 text-zinc-600 w-full md:w-auto">
-                     <div className="w-12 h-12 rounded-[var(--radius-minimal)] bg-gold/10 flex items-center justify-center text-gold shrink-0 border border-gold/20 group-hover:bg-gold group-hover:text-zinc-900 transition-all duration-700 shadow-sm">
+                   <div className="flex items-center md:flex-row-reverse gap-5 text-white/70 w-full md:w-auto">
+                     <div className="w-12 h-12 rounded-[var(--radius-minimal)] bg-gold/10 flex items-center justify-center text-gold shrink-0 border border-gold/20 group-hover:bg-gold group-hover:text-[#5c1011] transition-all duration-700 shadow-sm">
                        <MapPin size={20} />
                      </div>
                      <div>
-                         <p className="text-[9px] text-zinc-400 font-black uppercase tracking-[0.2em] mb-1 md:text-right">Lokasi</p>
-                         <p className="font-bold text-base md:text-lg leading-relaxed italic text-zinc-700 tracking-tight">{event2Location}</p>
+                         <p className="text-xs md:text-lg text-gold/70 font-black uppercase tracking-[0.2em] mb-1 md:text-right">Lokasi</p>
+                         <p className="font-bold text-base md:text-lg leading-relaxed italic text-white/90 tracking-tight">{event2Location}</p>
                      </div>
                    </div>
                    {event2Entertainment && (
-                     <div className="flex items-center md:flex-row-reverse gap-5 text-zinc-600 w-full md:w-auto">
-                       <div className="w-12 h-12 rounded-[var(--radius-minimal)] bg-gold/10 flex items-center justify-center text-gold shrink-0 border border-gold/20 group-hover:bg-gold group-hover:text-zinc-900 transition-all duration-700 shadow-sm">
+                     <div className="flex items-center md:flex-row-reverse gap-5 text-white/70 w-full md:w-auto">
+                       <div className="w-12 h-12 rounded-[var(--radius-minimal)] bg-gold/10 flex items-center justify-center text-gold shrink-0 border border-gold/20 group-hover:bg-gold group-hover:text-[#5c1011] transition-all duration-700 shadow-sm">
                          <Music size={20} />
                        </div>
                        <div>
-                         <p className="text-[9px] text-zinc-400 font-black uppercase tracking-[0.2em] mb-1 md:text-right">Hiburan</p>
+                         <p className="text-xs md:text-lg text-zinc-400 font-black uppercase tracking-[0.2em] mb-1 md:text-right">Hiburan</p>
                          <p className="font-black text-gold tracking-[0.3em] text-lg uppercase italic drop-shadow-sm">{event2Entertainment}</p>
                        </div>
                      </div>
@@ -202,12 +206,12 @@ export default function Events() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-50px" }}
         transition={{ duration: 1.2 }}
-        className="text-center mt-20 md:mt-32 max-w-2xl mx-auto px-6 glass-card p-10 md:p-14 rounded-[var(--radius-premium)] shadow-2xl relative overflow-hidden"
+        className="text-center mt-20 md:mt-32 max-w-2xl mx-auto px-6 p-10 md:p-14 bg-black/30 border border-gold/20 backdrop-blur-md rounded-[var(--radius-premium)] shadow-2xl relative overflow-hidden"
       >
-        <div className="absolute top-0 right-0 p-6 opacity-5">
+        <div className="absolute top-0 right-0 p-6 opacity-10 text-gold">
            <Music size={120} />
         </div>
-        <p className="text-zinc-700 font-medium leading-relaxed mb-8 text-base md:text-lg italic relative z-10">
+        <p className="text-white/80 font-medium leading-relaxed mb-8 text-base md:text-lg italic relative z-10 drop-shadow-md">
           "Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu kepada kedua mempelai."
         </p>
         <motion.div 
@@ -216,7 +220,7 @@ export default function Events() {
           className="relative z-10"
         >
           <div className="w-16 h-px bg-gradient-to-r from-transparent via-gold/50 to-transparent mx-auto mb-4"></div>
-          <p className="text-gold font-serif text-3xl md:text-4xl drop-shadow-sm font-black tracking-tight italic">
+          <p className="text-gold font-serif text-3xl md:text-4xl drop-shadow-sm font-black tracking-widest italic">
             Terima Kasih
           </p>
         </motion.div>
@@ -230,7 +234,7 @@ export default function Events() {
         transition={{ duration: 0.8 }}
         className="mt-16 max-w-2xl mx-auto text-center w-full px-6"
       >
-        <p className="text-[9px] font-black tracking-[0.6em] text-gold uppercase mb-8 drop-shadow-sm flex items-center justify-center gap-4">
+        <p className="text-sm md:text-2xl font-black tracking-[0.4em] md:tracking-[0.7em] text-gold uppercase mb-8 drop-shadow-sm flex items-center justify-center gap-4">
            <span className="w-8 h-px bg-gold/30"></span>
            Turut Mengundang
            <span className="w-8 h-px bg-gold/30"></span>
@@ -269,18 +273,18 @@ export default function Events() {
               animate={{ y: 0, opacity: 1, scale: 1 }}
               exit={{ y: 30, opacity: 0, scale: 0.9 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="w-full max-w-2xl glass-card bg-white/90 rounded-[var(--radius-premium)] p-10 pb-12 relative overflow-hidden max-h-[85vh] flex flex-col shadow-[0_50px_100px_rgba(0,0,0,0.3)]"
+              className="w-full max-w-2xl bg-[#5c1011]/90 backdrop-blur-md border border-gold/30 rounded-[var(--radius-premium)] p-10 pb-12 relative overflow-hidden max-h-[85vh] flex flex-col shadow-[0_50px_100px_rgba(0,0,0,0.5)]"
             >
               <div className="absolute top-0 right-0 w-64 h-64 bg-gold/10 rounded-full blur-[100px] pointer-events-none"></div>
               
               <button 
                 onClick={() => setShowGuests(null)}
-                className="absolute top-6 right-6 text-zinc-400 hover:text-zinc-900 bg-zinc-100 p-3 rounded-[var(--radius-minimal)] transition-all z-10 cursor-pointer shadow-sm active:scale-90"
+                className="absolute top-6 right-6 text-white/50 hover:text-white bg-white/10 p-3 rounded-[var(--radius-minimal)] transition-all z-10 cursor-pointer shadow-sm active:scale-90"
               >
                 <X size={24} />
               </button>
               
-              <h4 className="font-serif text-3xl md:text-4xl text-zinc-800 mb-8 text-center border-b border-gold/10 pb-8 mt-4 font-black tracking-tight italic shrink-0 uppercase">
+              <h4 className="font-serif text-3xl md:text-4xl text-white mb-8 text-center border-b border-gold/10 pb-8 mt-4 font-black tracking-widest italic shrink-0 uppercase">
                 {showGuests === 'pria' ? 'Keluarga Pria' : 'Keluarga Wanita'}
               </h4>
               <div className="overflow-y-auto custom-scrollbar pr-4 -mr-4 scroll-smooth">
@@ -291,9 +295,9 @@ export default function Events() {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: (i % 10) * 0.05 + 0.3 }}
                       key={i} 
-                      className="text-zinc-600 font-bold tracking-tight text-base flex items-start gap-4 p-4 rounded-[var(--radius-premium)] hover:bg-gold/5 transition-colors group"
+                      className="text-white/80 font-bold tracking-tight text-base flex items-start gap-4 p-4 rounded-[var(--radius-premium)] hover:bg-gold/10 transition-colors group"
                     >
-                      <div className="w-8 h-8 rounded-[var(--radius-minimal)] bg-gold/10 text-gold flex items-center justify-center shrink-0 text-xs font-black group-hover:bg-gold group-hover:text-white transition-all">
+                      <div className="w-8 h-8 rounded-[var(--radius-minimal)] bg-gold/20 text-gold flex items-center justify-center shrink-0 text-xs font-black group-hover:bg-gold group-hover:text-[#5c1011] transition-all">
                         {i + 1}
                       </div>
                       <span className="leading-tight pt-1">{guest}</span>

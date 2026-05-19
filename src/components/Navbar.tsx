@@ -1,12 +1,12 @@
-import { Heart, Calendar, Camera, MapPin, MessageCircle } from 'lucide-react';
+import { BookOpen, Heart, Calendar, Camera, MapPin } from 'lucide-react';
 import { motion } from 'motion/react';
 
 const menuItems = [
+  { id: 'salam', name: 'Mukadimah', icon: BookOpen },
   { id: 'couple', name: 'Couple', icon: Heart },
   { id: 'acara', name: 'Acara', icon: Calendar },
   { id: 'galeri', name: 'Galeri', icon: Camera },
   { id: 'lokasi', name: 'Lokasi', icon: MapPin },
-  { id: 'ucapan', name: 'Ucapan', icon: MessageCircle },
 ];
 
 export default function Navbar({ activeSection }: { activeSection: string }) {

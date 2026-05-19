@@ -20,8 +20,8 @@ html {
 }
 
 body {
-  background-color: #fdfaf5;
-  color: #2d2d2d;
+  background-color: #5c1011;
+  color: #FDFBF7;
   overflow-x: hidden;
   @apply selection:bg-gold/20;
 }

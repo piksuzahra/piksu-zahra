@@ -26,40 +26,34 @@ export default function App() {
   const [role, setRole] = useState(localStorage.getItem('adminRole') || null);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   
-  const [bgMusic] = useAppAudio('bgMusic', 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
-  const [theme] = useAppText('theme', 'rustic');
+  const [bgMusic, , musicLoading] = useAppAudio('bgMusic', 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
+  const [theme, , themeLoading] = useAppText('theme', 'rustic');
+  const [titleFontUrl, , fontLoading] = useAppText('titleFontUrl', '');
+
+  useEffect(() => {
+    // Artificial delay for smooth transition OR wait for results
+    const timer = setTimeout(() => {
+      if (!musicLoading && !themeLoading && !fontLoading) {
+        setIsLoading(false);
+      }
+    }, 1500);
+    
+    return () => clearTimeout(timer);
+  }, [musicLoading, themeLoading, fontLoading]);
 
   useEffect(() => {
     const root = document.documentElement;
     const body = document.body;
     
-    if (theme === 'ocean') {
-      root.style.setProperty('--theme-sage', '#5c8984'); 
-      root.style.setProperty('--theme-rose', '#545b77');
-      root.style.setProperty('--theme-gold', '#f2d388');
-      root.style.setProperty('--theme-terracotta', '#374259');
-      body.style.backgroundColor = '#f0f4f4';
-    } else if (theme === 'monochrome') {
-      root.style.setProperty('--theme-sage', '#52525b');
-      root.style.setProperty('--theme-rose', '#71717a');
-      root.style.setProperty('--theme-gold', '#a1a1aa');
-      root.style.setProperty('--theme-terracotta', '#3f3f46');
-      body.style.backgroundColor = '#fafafa';
-    } else if (theme === 'sunset') {
-      root.style.setProperty('--theme-sage', '#c46950'); 
-      root.style.setProperty('--theme-rose', '#eeb274');
-      root.style.setProperty('--theme-gold', '#f1d18a');
-      root.style.setProperty('--theme-terracotta', '#a2423d');
-      body.style.backgroundColor = '#fffaf0';
-    } else {
-      // Default rustic
-      root.style.setProperty('--theme-sage', '#778f64');
-      root.style.setProperty('--theme-rose', '#b87573');
-      root.style.setProperty('--theme-gold', '#b38510');
-      root.style.setProperty('--theme-terracotta', '#b5513a');
-      body.style.backgroundColor = '#FAF8F5';
-    }
+    // Default to Maroon
+    root.style.setProperty('--theme-sage', '#D4AF37'); // Gold as secondary/sage
+    root.style.setProperty('--theme-rose', '#800000'); // Maroon
+    root.style.setProperty('--theme-gold', '#D4AF37'); // Signature Gold
+    root.style.setProperty('--theme-terracotta', '#5C0002'); // Deep Maroon
+    body.style.backgroundColor = '#5c1011';
+    body.style.color = '#FDFBF7';
   }, [theme]);
 
   useEffect(() => {
@@ -105,7 +99,7 @@ export default function App() {
       });
     }, { threshold: 0.3 });
 
-    const sections = document.querySelectorAll('div[id]');
+    const sections = document.querySelectorAll('section[id]');
     sections.forEach(s => observer.observe(s));
     
     return () => observer.disconnect();
@@ -127,7 +121,49 @@ export default function App() {
   return (
     <>
       <DynamicFontLoader />
-      <div className="font-sans text-zinc-800 bg-[#FAF8F5] min-h-screen selection:bg-gold/20 overflow-x-hidden relative">
+      
+      <AnimatePresence>
+        {isLoading && (
+          <motion.div
+            key="splash"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1, ease: "easeInOut" }}
+            className="fixed inset-0 z-[9999] bg-[#5c1011] flex flex-col items-center justify-center overflow-hidden"
+          >
+            <motion.div 
+               animate={{ 
+                 scale: [1, 1.1, 1],
+                 opacity: [0.3, 0.6, 0.3]
+               }}
+               transition={{ duration: 3, repeat: Infinity }}
+               className="absolute inset-0 bg-gold/5 blur-[100px] rounded-full pointer-events-none"
+            />
+            
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1 }}
+              className="flex flex-col items-center gap-8 relative z-10"
+            >
+              <div className="relative">
+                <div className="w-24 h-24 border-2 border-gold/20 rounded-full animate-[spin_10s_linear_infinite]" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                   <div className="w-16 h-16 border-t-2 border-gold rounded-full animate-spin" />
+                </div>
+              </div>
+              <div className="text-center">
+                <h1 className="font-serif text-white text-3xl font-black italic tracking-widest mb-2 drop-shadow-lg">
+                  Loading Invitation
+                </h1>
+                <p className="text-gold text-xs uppercase tracking-[0.5em] opacity-60">Preparing your experience</p>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="font-sans text-[#FDFBF7] bg-[#5c1011] min-h-screen selection:bg-gold/20 overflow-x-hidden relative">
       <AnimatePresence>
         {/* Global seamless blobs to unify the pages */}
         {opened && (
@@ -136,9 +172,9 @@ export default function App() {
              animate={{ opacity: 1 }}
              transition={{ duration: 2 }}
           >
-            <div className="fixed top-[10%] left-[-10%] w-[600px] h-[600px] bg-gold/5 rounded-full blur-[120px] pointer-events-none z-0"></div>
-            <div className="fixed top-[50%] right-[-10%] w-[500px] h-[500px] bg-zinc-900/5 rounded-full blur-[100px] pointer-events-none z-0"></div>
-            <div className="fixed bottom-[-10%] left-[20%] w-[700px] h-[700px] bg-gold/5 rounded-full blur-[150px] pointer-events-none z-0"></div>
+            <div className="fixed top-[10%] left-[-10%] w-[600px] h-[600px] bg-gold/10 rounded-full blur-[120px] pointer-events-none z-0 mix-blend-screen"></div>
+            <div className="fixed top-[50%] right-[-10%] w-[500px] h-[500px] bg-[#350b0b] rounded-full blur-[100px] pointer-events-none z-0"></div>
+            <div className="fixed bottom-[-10%] left-[20%] w-[700px] h-[700px] bg-gold/5 rounded-full blur-[150px] pointer-events-none z-0 mix-blend-screen"></div>
           </motion.div>
         )}
         {!opened && (
@@ -171,7 +207,7 @@ export default function App() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={toggleMusic}
-            className="fixed top-4 left-4 z-50 flex items-center justify-center bg-white/80 backdrop-blur-md w-12 h-12 rounded-full shadow-xl border border-rose/10 text-zinc-600 hover:text-black transition-all"
+            className="fixed top-4 left-4 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md w-12 h-12 rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.5)] border border-gold/30 text-white/50 hover:text-white hover:border-white transition-all focus:outline-none"
           >
             <div className={`relative ${isPlaying ? 'animate-pulse' : ''}`}>
               {isPlaying ? <Volume2 size={20} className="text-gold" /> : <VolumeX size={20} />}
@@ -179,7 +215,7 @@ export default function App() {
                 <motion.div 
                   animate={{ scale: [1, 1.5, 1], opacity: [0.3, 0, 0.3] }}
                   transition={{ duration: 2, repeat: Infinity }}
-                  className="absolute inset-0 bg-gold/20 rounded-full"
+                  className="absolute inset-0 bg-gold/40 rounded-full blur-[4px]"
                 />
               )}
             </div>

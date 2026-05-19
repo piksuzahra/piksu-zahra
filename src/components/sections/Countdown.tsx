@@ -44,7 +44,7 @@ export default function Countdown() {
   ];
 
    return (
-    <div className="w-full relative z-10 flex flex-col items-center py-20 md:py-32">
+    <div className="w-full relative z-10 flex flex-col items-center py-4 md:py-8">
       <div className="w-full relative z-10 max-w-5xl text-center px-4">
         <div className="grid grid-cols-4 gap-4 md:gap-12 max-w-4xl mx-auto">
           {timeUnits.map((unit, i) => (
@@ -56,10 +56,10 @@ export default function Countdown() {
               transition={{ delay: i * 0.1, duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
               className="flex flex-col items-center group"
             >
-              <div className="w-full aspect-square glass-card flex flex-col items-center justify-center mb-6 overflow-hidden relative shadow-[0_30px_70px_rgba(0,0,0,0.06)] border-white/60 ring-1 ring-gold/20 hover:ring-gold/50 transition-all duration-1000 bg-white/70">
+              <div className="w-full aspect-square glass-card flex flex-col items-center justify-center mb-6 overflow-hidden relative shadow-[0_30px_70px_rgba(0,0,0,0.5)] border-gold/20 ring-1 ring-gold/20 hover:ring-gold/50 transition-all duration-1000 bg-black/40 backdrop-blur-md rounded-[var(--radius-minimal)]">
                 {/* Decorative Elements */}
-                <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-transparent via-gold/50 to-transparent"></div>
-                <div className="absolute bottom-0 inset-x-0 h-[1.5px] bg-gradient-to-r from-transparent via-gold/20 to-transparent"></div>
+                <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-transparent via-gold/70 to-transparent"></div>
+                <div className="absolute bottom-0 inset-x-0 h-[1.5px] bg-gradient-to-r from-transparent via-gold/40 to-transparent"></div>
                 
                 {/* Floating Glow */}
                 <motion.div 
@@ -68,10 +68,10 @@ export default function Countdown() {
                     scale: [0.8, 1.4, 0.8]
                   }}
                   transition={{ duration: 6, repeat: Infinity, delay: i * 0.5 }}
-                  className="absolute inset[-20%] bg-gold/10 blur-3xl rounded-full"
+                  className="absolute inset[-20%] bg-gold/20 blur-3xl rounded-full"
                 />
 
-                <span className="relative z-10 font-serif text-3xl md:text-7xl text-zinc-900 font-black drop-shadow-sm tracking-tighter italic">
+                <span className="relative z-10 font-serif text-3xl md:text-7xl text-white font-black drop-shadow-lg tracking-widest italic">
                   {unit.value.toString().padStart(2, '0')}
                 </span>
               </div>
@@ -79,7 +79,7 @@ export default function Countdown() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ delay: i * 0.1 + 0.6 }}
-                className="text-[9px] md:text-xs text-zinc-500 font-black uppercase tracking-[0.4em] px-5 py-2 bg-white/80 rounded-[var(--radius-minimal)] border border-zinc-100 shadow-md backdrop-blur-sm"
+                className="text-[9px] md:text-xs text-gold/90 font-black uppercase tracking-[0.4em] px-5 py-2 bg-[#4a0404]/80 rounded-[var(--radius-minimal)] border border-gold/30 shadow-md backdrop-blur-sm"
               >
                 {unit.label}
               </motion.div>

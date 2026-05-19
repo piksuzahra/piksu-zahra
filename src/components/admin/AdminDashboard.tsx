@@ -20,7 +20,18 @@ export default function AdminDashboard({ role, onLogout }: { role: string; onLog
 
     const handleProgress = (e: any) => {
       const { path, progress, stage, error } = e.detail;
-      const key = path.split('/')[1]?.split('_')[0] || path.split('/')[0];
+      // Robust key detection: if it's app/key_timestamp, extract key. If it's gallery/timestamp_name, use 'gallery'
+      let key = '';
+      if (path.startsWith('app/')) {
+        key = path.split('/')[1]?.split('_')[0] || '';
+      } else if (path.startsWith('gallery/')) {
+        key = 'gallery';
+      } else if (path.startsWith('audio/')) {
+        key = 'bgMusic';
+      } else {
+        key = path.split('/')[0];
+      }
+      
       setUploadProgress(prev => ({
         ...prev,
         [key]: { progress, stage, error }
@@ -93,9 +104,10 @@ export default function AdminDashboard({ role, onLogout }: { role: string; onLog
 
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, key: string, setter: (data: string) => void) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, key: string, setter: (data: any) => Promise<void> | void) => {
     const file = e.target.files?.[0];
     if (file) {
+      console.log(`Manual upload triggered for ${key}: ${file.name} (${file.size} bytes)`);
       if (file.size > 15 * 1024 * 1024) {
         alert('Maaf, ukuran file terlalu besar (maksimal 15MB).');
         return;
@@ -103,17 +115,17 @@ export default function AdminDashboard({ role, onLogout }: { role: string; onLog
       setIsUploading(key);
       try {
         const url = await uploadFile(file, `app/${key}_${Date.now()}`);
+        console.log(`Upload successful for ${key}, setting value...`);
         await setter(url);
         setSaveStatus('saved');
         setTimeout(() => setSaveStatus('idle'), 3000);
         setIsUploading(null); // Clear on success
       } catch (err) {
-        console.error(err);
-        // Note: The overlay itself handles displaying the error message now via events
-        // but we keep the alert as a fallback
-        alert('Gagal mengupload: ' + (err instanceof Error ? err.message : 'Silahkan cek koneksi internet Anda'));
+        console.error(`Upload failed for ${key}:`, err);
+        const errMsg = err instanceof Error ? err.message : 'Silahkan cek koneksi internet Anda';
+        alert('Gagal mengupload: ' + errMsg);
+        setIsUploading(null);
       }
-      // removed finally { setIsUploading(null) } to allow error UI to persist
     }
   };
 
@@ -121,6 +133,7 @@ export default function AdminDashboard({ role, onLogout }: { role: string; onLog
     const files = Array.from(e.target.files || []) as File[];
     if (files.length === 0) return;
     
+    console.log(`Manual gallery upload triggered: ${files.length} files`);
     // Check total size
     const oversized = files.some(f => f.size > 15 * 1024 * 1024);
     if (oversized) {
@@ -137,10 +150,10 @@ export default function AdminDashboard({ role, onLogout }: { role: string; onLog
       setTimeout(() => setSaveStatus('idle'), 3000);
       setIsUploading(null); // Clear on success
     } catch (err) {
-      console.error(err);
+      console.error('Gallery upload error:', err);
       alert('Gallery upload failed: ' + (err instanceof Error ? err.message : 'Check connection'));
+      setIsUploading(null);
     }
-    // removed finally { setIsUploading(null) }
   };
 
   const removeGalleryPhoto = async (index: number) => {
@@ -183,10 +196,18 @@ export default function AdminDashboard({ role, onLogout }: { role: string; onLog
 
   const handleSimpleSave = () => {
     setSaveStatus('saving');
-    setTimeout(() => {
-      setSaveStatus('saved');
-      setTimeout(() => setSaveStatus('idle'), 3000);
-    }, 800);
+    // Manual checkpoint feedback
+    setTimeout(async () => {
+      const ok = await testFirebaseConnection();
+      if (ok) {
+        setSaveStatus('saved');
+        setTimeout(() => setSaveStatus('idle'), 3000);
+        console.log("Manual Sync successful");
+      } else {
+        setSaveStatus('idle');
+        alert("Gagal sinkronisasi data. Silahkan cek koneksi internet Anda.");
+      }
+    }, 1000);
   };
 
   useEffect(() => {
@@ -961,32 +982,35 @@ export default function AdminDashboard({ role, onLogout }: { role: string; onLog
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-zinc-700 mb-1">Background Music (MP3)</label>
-                      <div className="flex items-center gap-4">
-                        <label className="bg-zinc-100 hover:bg-zinc-200 text-zinc-700 px-4 py-2 rounded-lg cursor-pointer transition text-sm">
-                          Upload Audio file
-                          <input 
-                            type="file" 
-                            accept="audio/mp3, audio/mpeg" 
-                            className="hidden" 
-                            onChange={async (e) => {
-                              const file = e.target.files?.[0];
-                              if (file) {
-                                setIsUploading('bgMusic');
-                                try {
-                                  const url = await uploadFile(file, `audio/bgMusic_${Date.now()}`);
-                                  setBgMusic(url);
-                                  alert('Music configured! It will play when the invitation is opened.');
-                                } catch (err) {
-                                  console.error(err);
-                                  alert('Audio upload failed');
-                                } finally {
-                                  setIsUploading(null);
-                                }
-                              }
-                            }} 
-                          />
-                        </label>
-                        <span className="text-xs text-zinc-500">Max size 5MB recommended</span>
+                      <div className="flex flex-col gap-3">
+                        <div className="flex items-center gap-4">
+                          <label className="bg-zinc-900 border border-zinc-800 text-white px-6 py-3 rounded-xl cursor-pointer hover:bg-zinc-800 transition-all text-xs font-black uppercase tracking-widest shadow-md flex items-center gap-2 group">
+                            <Upload size={14} className="group-hover:-translate-y-0.5 transition-transform" />
+                            {isUploading === 'bgMusic' ? 'Uploading...' : 'Upload Audio baru'}
+                            <input 
+                              type="file" 
+                              accept="audio/mp3, audio/mpeg" 
+                              className="hidden" 
+                              onChange={(e) => handleFileUpload(e, 'bgMusic', setBgMusic)} 
+                            />
+                          </label>
+                          <span className="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Max size 15MB</span>
+                        </div>
+                        
+                        {bgMusic && (
+                          <div className="flex items-center gap-3 bg-zinc-50 p-3 rounded-lg border border-zinc-100 animate-in slide-in-from-left duration-500">
+                             <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                             <span className="text-[10px] text-zinc-500 font-medium truncate max-w-[200px]">
+                               {bgMusic.startsWith('data:') ? 'Audio (Base64)' : bgMusic.split('/').pop()?.split('?')[0] || 'Audio Terpasang'}
+                             </span>
+                             <button 
+                               onClick={() => setBgMusic(null)}
+                               className="text-[9px] font-black text-rose-500 hover:text-rose-700 uppercase tracking-widest ml-auto"
+                             >
+                               Hapus
+                             </button>
+                          </div>
+                        )}
                       </div>
                     </div>
                     <div>

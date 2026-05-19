@@ -49,7 +49,7 @@ export default function Cover({ onOpen }: { onOpen: () => void }) {
 
   const [coverPhoto, setCoverPhoto] = useAppImage(
     "coverPhoto",
-    "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=2000",
+    "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=50&w=1600",
   );
   const [groomName] = useAppText("groomName", "Piksu");
   const [brideName] = useAppText("brideName", "Zahra");
@@ -67,13 +67,13 @@ export default function Cover({ onOpen }: { onOpen: () => void }) {
     : new Intl.DateTimeFormat("id-ID", { month: "long" })
         .format(d)
         .toUpperCase();
-  const displayDate = `${dayName}, ${isNaN(d.getTime()) ? "5" : d.getDate()} ${monthName} ${isNaN(d.getTime()) ? "2026" : d.getFullYear()}`;
+  const displayDate = `${dayName}, \u00A0\u00A0 ${isNaN(d.getTime()) ? "5" : d.getDate()} ${monthName} ${isNaN(d.getTime()) ? "2026" : d.getFullYear()}`;
 
   return (
     <motion.div
       exit={{ opacity: 0, y: -10, filter: "blur(5px)" }}
       transition={{ duration: 1, ease: [0.4, 0, 0.2, 1] }}
-      className="fixed inset-0 flex flex-col items-center justify-center bg-[#FAF8F5] z-[100] overflow-hidden"
+      className="fixed inset-0 flex flex-col items-center justify-center bg-[#5c1011] z-[100] overflow-hidden"
     >
       {/* Hidden Login Icon */}
       <div
@@ -86,7 +86,7 @@ export default function Cover({ onOpen }: { onOpen: () => void }) {
       {showLogin && (
         <div className="absolute inset-0 z-[200] bg-zinc-900/40 backdrop-blur-sm flex items-center justify-center p-4">
           <div
-            className="bg-white rounded-[var(--radius-premium)] p-8 shadow-2xl max-w-sm w-full relative"
+            className="bg-white rounded-[var(--radius-minimal)] p-8 shadow-2xl max-w-sm w-full relative"
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -95,7 +95,7 @@ export default function Cover({ onOpen }: { onOpen: () => void }) {
             >
               <X size={20} />
             </button>
-            <h3 className="font-serif text-3xl font-black text-center mb-8 tracking-tight italic">
+            <h3 className="font-serif text-3xl font-black text-center mb-8 tracking-widest italic">
               Admin Login
             </h3>
             <form
@@ -170,7 +170,7 @@ export default function Cover({ onOpen }: { onOpen: () => void }) {
                   }
                 }}
                 disabled={isLoggingIn}
-                className="w-full flex items-center justify-center gap-3 py-4 bg-gold text-zinc-900 border border-transparent hover:border-white/50 hover:bg-gold/90 rounded-[var(--radius-premium)] transition-colors shadow-[0_10px_30px_rgba(212,175,55,0.4)] disabled:opacity-50"
+                className="w-full flex items-center justify-center gap-3 py-4 bg-gold text-zinc-900 border border-transparent hover:border-white/50 hover:bg-gold/90 rounded-[var(--radius-minimal)] transition-colors shadow-[0_10px_30px_rgba(212,175,55,0.4)] disabled:opacity-50"
               >
                 <LogIn size={18} />
                 <span className="text-[10px] font-black uppercase tracking-widest">
@@ -209,34 +209,34 @@ export default function Cover({ onOpen }: { onOpen: () => void }) {
         ))}
       </div>
 
-      {/* Background Theme layer */}
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px] z-[5] pointer-events-none"></div>
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/70 z-[5] pointer-events-none"></div>
-
-      {/* Moving Full Screen Photo */}
+      {/* Moving Full Screen Photo with Refined Visibility */}
       <div className="absolute inset-0 overflow-hidden z-0 pointer-events-none">
         <motion.div
-          animate={{ scale: [1, 1.1, 1], rotate: [0, 1, 0] }}
-          transition={{ duration: 40, repeat: Infinity, ease: "easeInOut" }}
-          className="w-full h-full bg-cover bg-center pointer-events-none"
+          animate={{ scale: [1, 1.05, 1] }} 
+          transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
+          className="w-full h-full bg-cover bg-center opacity-90 transition-opacity duration-1000"
           style={{ backgroundImage: `url('${coverPhoto}')` }}
         />
       </div>
 
+      {/* Optimized Overlays - Removing blur to show faces clearly */}
+      <div className="absolute inset-0 bg-black/30 z-[5] pointer-events-none"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-[#350b0b] via-[#350b0b]/30 to-[#350b0b]/60 z-[5] pointer-events-none"></div>
+
       <div className="relative z-10 flex flex-col items-center justify-between text-center px-6 w-full h-[100dvh] py-12 md:py-20 pointer-events-none">
-        <div className="flex flex-col items-center mt-2 md:mt-6">
+        <div className="flex flex-col items-center mt-10 md:mt-16">
           <motion.div
             initial={{ y: -30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.5, duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-col items-center mb-6 md:mb-12"
+            className="flex flex-col items-center mb-12 md:mb-24"
           >
-            <div className="flex items-center gap-3 md:gap-4 mb-4">
-              <div className="w-6 md:w-12 h-px bg-gold/40"></div>
-              <p className="text-gold tracking-[0.4em] md:tracking-[0.7em] uppercase text-[10px] md:text-base font-black drop-shadow-lg">
+            <div className="flex items-center gap-3 md:gap-4 mb-2">
+              <div className="w-8 md:w-16 h-px bg-gold/40"></div>
+              <p className="text-gold tracking-[0.8em] md:tracking-[1.2em] uppercase text-xs md:text-xl font-black drop-shadow-lg">
                 The Wedding of
               </p>
-              <div className="w-6 md:w-12 h-px bg-gold/40"></div>
+              <div className="w-8 md:w-16 h-px bg-gold/40"></div>
             </div>
           </motion.div>
 
@@ -244,10 +244,10 @@ export default function Cover({ onOpen }: { onOpen: () => void }) {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1, duration: 2, ease: [0.22, 1, 0.36, 1] }}
-            className="font-script text-[60px] md:text-[120px] mb-6 md:mb-10 text-white drop-shadow-[0_15px_40px_rgba(0,0,0,0.8)] leading-[0.8] flex flex-col items-center select-none"
+            className="font-script text-[70px] md:text-[140px] mb-4 md:mb-8 text-white drop-shadow-[0_15px_40px_rgba(0,0,0,0.8)] leading-[0.8] tracking-widest flex flex-col items-center select-none"
           >
             <motion.span
-              animate={{ y: [-2, 2, -2] }}
+              animate={{ y: [-1, 1, -1] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
               className="block"
             >
@@ -255,21 +255,21 @@ export default function Cover({ onOpen }: { onOpen: () => void }) {
             </motion.span>
 
             <motion.div
-              animate={{ scale: [1, 1.1, 1], opacity: [0.8, 1, 0.8] }}
+              animate={{ scale: [1, 1.05, 1], opacity: [0.8, 1, 0.8] }}
               transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="flex items-center justify-center my-4 md:my-8"
+              className="flex items-center justify-center my-0 md:my-1"
             >
-              <div className="w-8 md:w-16 h-[0.5px] bg-gradient-to-r from-transparent via-gold/80 to-transparent mx-4"></div>
-              <span className="font-serif italic text-gold text-xl md:text-4xl drop-shadow-[0_4px_15px_rgba(212,175,55,0.6)]">
+              <div className="w-6 md:w-12 h-[0.5px] bg-gradient-to-r from-transparent via-gold/60 to-transparent mx-2"></div>
+              <span className="font-serif italic text-gold text-lg md:text-3xl drop-shadow-[0_4px_15px_rgba(212,175,55,0.6)]">
                 &
               </span>
-              <div className="w-8 md:w-16 h-[0.5px] bg-gradient-to-l from-transparent via-gold/80 to-transparent mx-4"></div>
+              <div className="w-6 md:w-12 h-[0.5px] bg-gradient-to-l from-transparent via-gold/60 to-transparent mx-2"></div>
             </motion.div>
 
             <motion.span
-              animate={{ y: [2, -2, 2] }}
+              animate={{ y: [1, -1, 1] }}
               transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-              className="block pt-2"
+              className="block pt-1"
             >
               {brideName}
             </motion.span>
@@ -279,10 +279,10 @@ export default function Cover({ onOpen }: { onOpen: () => void }) {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 1.8, duration: 1.2 }}
-            className="flex flex-col items-center"
+            className="flex flex-col items-center mt-10 md:mt-16"
           >
-            <div className="inline-block px-5 py-1.5 border border-gold/40 backdrop-blur-xl rounded-full bg-black/40 shadow-2xl ring-1 ring-white/10">
-              <p className="font-serif tracking-[0.2em] text-[10px] md:text-xs font-black uppercase text-gold drop-shadow-md">
+            <div className="inline-block px-6 py-1.5 md:px-10 md:py-2 border border-gold/30 backdrop-blur-xl rounded-[var(--radius-minimal)] bg-black/30 shadow-2xl ring-1 ring-white/5">
+              <p className="font-serif tracking-[0.3em] text-xs md:text-xl font-black uppercase text-gold drop-shadow-md">
                 {displayDate}
               </p>
             </div>
@@ -307,12 +307,12 @@ export default function Cover({ onOpen }: { onOpen: () => void }) {
               initial={{ opacity: 0.6 }}
               animate={{ opacity: [0.6, 1, 0.6] }}
               transition={{ duration: 4, repeat: Infinity }}
-              className="text-gold text-[8px] md:text-[10px] tracking-[0.3em] font-black mb-4 md:mb-6 uppercase relative z-10 w-full"
+              className="text-black text-[8px] md:text-[10px] tracking-[0.3em] font-black mb-4 md:mb-6 uppercase relative z-10 w-full"
             >
               Kepada Yth. Bapak/Ibu/Saudara/i
             </motion.p>
 
-            <h3 className="text-white font-serif text-2xl md:text-4xl font-black truncate relative z-10 max-w-full px-2 tracking-wide drop-shadow-2xl italic leading-tight capitalize">
+            <h3 className="text-gold font-serif text-3xl md:text-5xl font-black truncate relative z-10 max-w-full px-2 tracking-widest drop-shadow-2xl italic leading-tight capitalize">
               {recipientName}
             </h3>
 

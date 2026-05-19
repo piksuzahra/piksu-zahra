@@ -9,18 +9,25 @@ export const db = getFirestore(app, (firebaseConfig as any).firestoreDatabaseId)
 export const auth = getAuth(app);
 export const storage = getStorage(app);
 
-// Authentication status promise
+// Authentication status promise with 10s timeout
 export const authReady = new Promise<User | null>((resolve) => {
+  const timeout = setTimeout(() => {
+    console.warn("Auth check timed out, proceeding as unauthenticated");
+    resolve(null);
+  }, 10000);
+
   // Try to sign in anonymously if not already signed in
   signInAnonymously(auth)
     .then((credential) => {
+      clearTimeout(timeout);
       console.log("Firebase Auth State: Authenticated as", credential.user.uid);
       resolve(credential.user);
     })
     .catch((err) => {
       console.warn('Anonymous auth failed:', err);
-      // Fallback to checking state in case we're offline but cached
+      // Fallback
       const unsubscribe = onAuthStateChanged(auth, (user) => {
+        clearTimeout(timeout);
         resolve(user);
         unsubscribe();
       });

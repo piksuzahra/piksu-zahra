@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { motion } from 'motion/react';
-import { Instagram } from 'lucide-react';
+import { Instagram, Heart } from 'lucide-react';
 import SectionTitle from '../SectionTitle';
 import { useAppImage, useAppText, uploadFile } from '../../lib/store';
 import DecorativeSVG from '../DecorativeSVG';
@@ -16,31 +16,32 @@ const CircularFrame = ({ children, isReversed, image, onUpload }: { children: Re
     {/* External Animated Ornaments */}
     <motion.div 
       animate={{ rotate: 360 }}
-      transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-      className="absolute inset-[-20px] md:inset-[-30px] pointer-events-none z-0 opacity-40 select-none"
+      transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+      className="absolute inset-[-25px] md:inset-[-35px] pointer-events-none z-0 opacity-50 select-none"
     >
-      <svg viewBox="0 0 200 200" className="w-full h-full text-gold/40" fill="none" stroke="currentColor" strokeWidth="0.3">
-        <circle cx="100" cy="100" r="98" strokeDasharray="2 4" />
-        <circle cx="100" cy="100" r="92" strokeWidth="0.5" />
-        {[0, 45, 90, 135, 180, 225, 270, 315].map(deg => (
+      <svg viewBox="0 0 200 200" className="w-full h-full text-gold/40" fill="none" stroke="currentColor" strokeWidth="0.5">
+        {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map(deg => (
           <g key={deg} transform={`rotate(${deg} 100 100)`}>
-             <path d="M100 2 L103 12 L100 18 L97 12 Z" fill="currentColor" />
-             <circle cx="100" cy="25" r="1.5" fill="currentColor" />
+             <path d="M100 5 C105 15, 115 15, 110 25 S100 35, 100 35 S90 35, 90 25 S95 15, 100 5" className="fill-gold/10" />
+             <circle cx="100" cy="15" r="2" fill="currentColor" />
           </g>
         ))}
+        <circle cx="100" cy="100" r="85" strokeDasharray="1 6" strokeWidth="2" strokeLinecap="round" />
       </svg>
     </motion.div>
 
     {/* Secondary Counter-Rotating Ring */}
     <motion.div 
       animate={{ rotate: -360 }}
-      transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-      className="absolute inset-[-8px] md:inset-[-12px] pointer-events-none z-0 opacity-60 select-none"
+      transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+      className="absolute inset-[-12px] md:inset-[-18px] pointer-events-none z-0 opacity-70 select-none"
     >
-      <svg viewBox="0 0 200 200" className="w-full h-full text-gold/60" fill="none" stroke="currentColor" strokeWidth="0.6">
-        <circle cx="100" cy="100" r="88" strokeDasharray="12 8" />
-        {[22.5, 67.5, 112.5, 157.5, 202.5, 247.5, 292.5, 337.5].map(deg => (
-          <circle key={deg} cx={100 + 88 * Math.cos(deg * Math.PI / 180)} cy={100 + 88 * Math.sin(deg * Math.PI / 180)} r="2" fill="currentColor" />
+      <svg viewBox="0 0 200 200" className="w-full h-full text-gold/60" fill="none" stroke="currentColor" strokeWidth="0.8">
+        {[15, 45, 75, 105, 135, 165, 195, 225, 255, 285, 315, 345].map(deg => (
+          <g key={deg} transform={`rotate(${deg} 100 100)`}>
+            <circle cx="100" cy="18" r="3" fill="currentColor" className="drop-shadow-[0_0_5px_rgba(212,175,55,0.8)]" />
+            <path d="M98 25 L100 35 L102 25 Z" fill="currentColor" />
+          </g>
         ))}
       </svg>
     </motion.div>
@@ -49,20 +50,20 @@ const CircularFrame = ({ children, isReversed, image, onUpload }: { children: Re
     <motion.div
       animate={{ 
         boxShadow: [
-          "0 0 20px rgba(212, 175, 55, 0.1)", 
-          "0 0 40px rgba(212, 175, 55, 0.2)", 
-          "0 0 20px rgba(212, 175, 55, 0.1)"
+          "0 0 25px rgba(212, 175, 55, 0.2)", 
+          "0 0 50px rgba(212, 175, 55, 0.4)", 
+          "0 0 25px rgba(212, 175, 55, 0.2)"
         ]
       }}
-      transition={{ duration: 4, repeat: Infinity }}
-      className={`absolute inset-2 rounded-full z-10 pointer-events-none bg-gradient-to-tr ${isReversed ? 'from-gold/5 to-zinc-900/5' : 'from-zinc-900/5 to-gold/5'}`}
+      transition={{ duration: 6, repeat: Infinity }}
+      className={`absolute inset-2 rounded-full z-10 pointer-events-none bg-gradient-to-tr ${isReversed ? 'from-gold/10 to-[#5c1011]/10' : 'from-[#5c1011]/10 to-gold/10'}`}
     />
 
     {/* The Portrait Frame */}
     <motion.label 
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.98 }}
-      className="relative w-full h-full rounded-full border-[6px] border-white overflow-hidden bg-white z-20 shadow-[0_15px_40px_rgba(0,0,0,0.15)] group flex items-center justify-center cursor-pointer ring-1 ring-gold/20"
+      className="relative w-full h-full rounded-full border-[8px] border-[#5c1011] overflow-hidden bg-[#5c1011] z-20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] group flex items-center justify-center cursor-pointer ring-2 ring-gold/40"
     >
       <input type="file" className="hidden" accept="image/*" onChange={onUpload} />
       <div className="w-full h-full rounded-full overflow-hidden relative">
@@ -100,8 +101,8 @@ const CircularFrame = ({ children, isReversed, image, onUpload }: { children: Re
 );
 
 export default function Couple() {
-  const [priaPhoto, setPriaPhoto] = useAppImage('priaPhoto', 'https://images.unsplash.com/photo-1507679799987-c73774573b0a?auto=format&fit=crop&q=80&w=1000');
-  const [wanitaPhoto, setWanitaPhoto] = useAppImage('wanitaPhoto', 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=1000');
+  const [priaPhoto, setPriaPhoto] = useAppImage('priaPhoto', 'https://images.unsplash.com/photo-1507679799987-c73774573b0a?auto=format&fit=crop&q=60&w=800');
+  const [wanitaPhoto, setWanitaPhoto] = useAppImage('wanitaPhoto', 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=60&w=800');
 
   const [groomName] = useAppText('groomName', 'Piksu');
   const [brideName] = useAppText('brideName', 'Zahra');
@@ -129,18 +130,22 @@ export default function Couple() {
   };
 
   return (
-    <section className="py-24 px-6 flex flex-col items-center overflow-hidden relative">
+    <section className="py-16 md:py-24 px-6 flex flex-col items-center overflow-hidden relative">
       <DecorativeSVG />
       
       <div className="absolute top-1/4 -right-20 w-80 h-80 bg-gold/5 blur-[100px] rounded-full pointer-events-none"></div>
       <div className="absolute bottom-1/4 -left-20 w-80 h-80 bg-zinc-900/5 blur-[100px] rounded-full pointer-events-none"></div>
 
-      <SectionTitle title="Sang Mempelai" subtitle="Pasangan Berbahagia" />
+      <SectionTitle 
+        title="Sang Mempelai" 
+        subtitle="Pasangan Berbahagia" 
+        icon={<Heart size={44} strokeWidth={1} fill="currentColor" />} 
+      />
 
-      <div className="flex flex-col gap-12 md:gap-24 w-full max-w-3xl mt-8 relative z-10">
+      <div className="flex flex-col gap-8 md:gap-16 w-full max-w-3xl mt-8 relative z-10">
         
         {/* Wanita -> Teks Kanan, Foto Kiri on desktop */}
-        <div className="flex flex-col md:flex-row items-center gap-6 md:gap-16 w-full mb-16 md:mb-24">
+        <div className="flex flex-col md:flex-row items-center gap-6 md:gap-12 w-full mb-10 md:mb-16">
           <div className="shrink-0">
             <CircularFrame image={wanitaPhoto} onUpload={(e) => handlePhotoUpload(e, setWanitaPhoto, 'wanitaPhoto')}>
               {brideInitial}
@@ -153,10 +158,10 @@ export default function Couple() {
             transition={{ duration: 1.2, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
             className="text-center md:text-left flex-1 px-4"
           >
-            <h4 className="text-gold font-serif italic text-xs md:text-sm mb-3 tracking-[0.3em] font-black uppercase drop-shadow-sm">Mempelai Wanita</h4>
-            <h3 className="font-serif text-3xl md:text-5xl text-zinc-900 mb-4 font-black drop-shadow-md leading-tight tracking-tighter italic">{brideFull}</h3>
+            <h4 className="text-gold font-serif italic text-sm md:text-2xl mb-1 md:mb-2 tracking-[0.4em] md:tracking-[0.7em] font-black uppercase drop-shadow-sm">Mempelai Wanita</h4>
+            <h3 className="font-serif text-5xl md:text-7xl text-white mb-4 font-black drop-shadow-md leading-tight tracking-widest italic">{brideFull}</h3>
             <div className="w-16 h-1 bg-gradient-to-r from-gold/40 to-transparent mb-4 hidden md:block rounded-full"></div>
-            <p className="text-sm md:text-base min-h-[3em] text-zinc-600 font-bold leading-relaxed italic tracking-tight mb-6" dangerouslySetInnerHTML={{ __html: brideDesc ? brideDesc.replace(/\\n/g, '<br/>') : '' }} />
+            <p className="text-sm md:text-base min-h-[3em] text-white/80 font-bold leading-relaxed italic tracking-tight mb-6" dangerouslySetInnerHTML={{ __html: brideDesc ? brideDesc.replace(/\\n/g, '<br/>') : '' }} />
             
             <motion.a
               whileHover={{ scale: 1.05, x: 8 }}
@@ -164,7 +169,7 @@ export default function Couple() {
               href={`https://instagram.com/${brideIg?.replace('@', '').trim()}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 text-gold hover:text-gold-dark transition-all font-black tracking-[0.2em] text-[10px] md:text-xs uppercase group bg-gold/10 px-6 py-3 rounded-[var(--radius-minimal)] border border-gold/20 hover:border-gold/50"
+              className="inline-flex items-center gap-3 text-gold hover:text-white transition-all font-black tracking-[0.2em] text-[10px] md:text-xs uppercase group bg-gold/20 px-6 py-3 rounded-[var(--radius-minimal)] border border-gold/30 hover:border-gold/60"
             >
               <Instagram size={14} className="group-hover:rotate-12 transition-transform" />
               <span>{brideIg}</span>
@@ -202,7 +207,7 @@ export default function Couple() {
         </motion.div>
 
         {/* Pria -> Teks Kiri, Foto Kanan on desktop */}
-        <div className="flex flex-col md:flex-row-reverse items-center gap-6 md:gap-16 w-full mb-16 md:mb-24">
+        <div className="flex flex-col md:flex-row-reverse items-center gap-6 md:gap-12 w-full mb-10 md:mb-16">
           <div className="shrink-0">
             <CircularFrame isReversed image={priaPhoto} onUpload={(e) => handlePhotoUpload(e, setPriaPhoto, 'priaPhoto')}>
               {groomInitial}
@@ -215,10 +220,10 @@ export default function Couple() {
             transition={{ duration: 1.2, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
             className="text-center md:text-right flex-1 px-4"
           >
-            <h4 className="text-gold font-serif italic text-xs md:text-sm mb-3 tracking-[0.3em] font-black uppercase drop-shadow-sm">Mempelai Pria</h4>
-            <h3 className="font-serif text-3xl md:text-5xl text-zinc-900 mb-4 font-black drop-shadow-md leading-tight tracking-tighter italic">{groomFull}</h3>
+            <h4 className="text-gold font-serif italic text-sm md:text-2xl mb-1 md:mb-2 tracking-[0.4em] md:tracking-[0.7em] font-black uppercase drop-shadow-sm">Mempelai Pria</h4>
+            <h3 className="font-serif text-5xl md:text-7xl text-white mb-4 font-black drop-shadow-md leading-tight tracking-widest italic">{groomFull}</h3>
             <div className="w-16 h-1 bg-gradient-to-l from-gold/40 to-transparent mb-4 hidden md:block ms-auto rounded-full"></div>
-            <p className="text-sm md:text-base min-h-[3em] text-zinc-600 font-bold leading-relaxed italic tracking-tight mb-6" dangerouslySetInnerHTML={{ __html: groomDesc ? groomDesc.replace(/\\n/g, '<br/>') : '' }} />
+            <p className="text-sm md:text-base min-h-[3em] text-white/80 font-bold leading-relaxed italic tracking-tight mb-6" dangerouslySetInnerHTML={{ __html: groomDesc ? groomDesc.replace(/\\n/g, '<br/>') : '' }} />
             
             <motion.a
               whileHover={{ scale: 1.05, x: -8 }}
@@ -226,7 +231,7 @@ export default function Couple() {
               href={`https://instagram.com/${groomIg?.replace('@', '').trim()}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 text-gold hover:text-gold-dark transition-all font-black tracking-[0.2em] text-[10px] md:text-xs uppercase group bg-gold/10 px-6 py-3 rounded-[var(--radius-minimal)] border border-gold/20 hover:border-gold/50"
+              className="inline-flex items-center gap-3 text-gold hover:text-white transition-all font-black tracking-[0.2em] text-[10px] md:text-xs uppercase group bg-gold/20 px-6 py-3 rounded-[var(--radius-minimal)] border border-gold/30 hover:border-gold/60"
             >
               <Instagram size={14} className="group-hover:rotate-12 transition-transform" />
               <span>{groomIg}</span>

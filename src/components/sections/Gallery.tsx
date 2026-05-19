@@ -30,7 +30,7 @@ export default function Gallery() {
   };
 
   return (
-    <section className="py-24 px-6 relative flex flex-col items-center overflow-hidden">
+    <section id="galeri" className="py-16 md:py-24 px-6 relative flex flex-col items-center overflow-hidden">
       <DecorativeSVG />
       
       {/* Dynamic Sparkles */}
@@ -58,16 +58,20 @@ export default function Gallery() {
         ))}
       </div>
 
-      <SectionTitle title="Galeri Momen" subtitle="Our Memories" />
+      <SectionTitle 
+        title="Galeri Momen" 
+        subtitle="Captured Memories" 
+        icon={<Camera size={44} strokeWidth={1} />} 
+      />
 
       {isUploading && (
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-12 flex items-center gap-4 bg-white/80 backdrop-blur-xl px-8 py-4 rounded-full border border-gold/20 shadow-xl relative z-10"
+          className="mb-12 flex items-center gap-4 bg-black/40 backdrop-blur-xl px-8 py-4 rounded-full border border-gold/40 shadow-xl relative z-10"
         >
           <Loader2 size={20} className="animate-spin text-gold" />
-          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-900">Menyimpan Momen Bahagia...</span>
+          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white">Menyimpan Momen Bahagia...</span>
         </motion.div>
       )}
 
@@ -84,7 +88,7 @@ export default function Gallery() {
               ease: [0.22, 1, 0.36, 1] 
             }}
             key={i} 
-            className="relative break-inside-avoid shadow-[0_20px_50px_rgba(0,0,0,0.1)] rounded-[var(--radius-premium)] overflow-hidden cursor-pointer group bg-zinc-200 border-2 border-white ring-1 ring-gold/10"
+            className="relative break-inside-avoid shadow-[0_40px_100px_rgba(0,0,0,0.5)] rounded-[var(--radius-premium)] overflow-hidden cursor-pointer group bg-black/40 border border-gold/30 backdrop-blur-md"
             onClick={() => setSelectedImg(i)}
           >
             <div className="absolute inset-0 bg-black/0 group-hover:bg-gold/5 transition-colors duration-700 z-10"></div>
