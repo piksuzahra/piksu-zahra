@@ -16,13 +16,10 @@ const defaultGallery = [
 
 async function getConfigFromServer<T>(key: string): Promise<T | null> {
   const path = `config/${key}`;
-  const timeoutPromise = new Promise<null>((_, reject) =>
-    setTimeout(() => reject(new Error(`Timeout fetching ${key}`)), 10000)
-  );
 
   try {
     const docRef = doc(db, 'config', key);
-    const docSnap = await Promise.race([getDoc(docRef), timeoutPromise]) as any;
+    const docSnap = await getDoc(docRef) as any;
     
     if (docSnap && docSnap.exists()) {
       const data = docSnap.data();
@@ -36,7 +33,11 @@ async function getConfigFromServer<T>(key: string): Promise<T | null> {
       }
     }
   } catch (err) {
-    console.error(`Error loading config for ${key}:`, err);
+    if ((err as Error)?.message?.includes('offline')) {
+      console.warn(`Device offline, loading config for ${key} failed, using default`);
+    } else {
+      console.error(`Error loading config for ${key}:`, err);
+    }
     // don't throw, just return null so default can be used
   }
   return null;
@@ -44,14 +45,10 @@ async function getConfigFromServer<T>(key: string): Promise<T | null> {
 
 async function setConfigOnServer(key: string, value: any) {
   const path = `config/${key}`;
-  const timeoutPromise = new Promise<void>((_, reject) =>
-    setTimeout(() => reject(new Error(`Timeout saving ${key}`)), 10000)
-  );
 
   try {
     const docRef = doc(db, 'config', key);
-    const savePromise = setDoc(docRef, { value: JSON.stringify(value) });
-    await Promise.race([savePromise, timeoutPromise]);
+    await setDoc(docRef, { value: JSON.stringify(value) });
     console.log(`Config ${key} saved successfully`);
   } catch (err) {
     console.error(`Error saving config for ${key}:`, err);

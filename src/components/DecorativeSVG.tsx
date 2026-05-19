@@ -11,7 +11,7 @@ export default function DecorativeSVG() {
           scale: [1, 1.05, 1] 
         }}
         transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute top-[5%] -left-10 w-64 h-64 text-sage/10 drop-shadow-sm opacity-60"
+        className="absolute top-[5%] -left-10 w-64 h-64 text-gold/10 drop-shadow-sm opacity-60"
         viewBox="0 0 200 200"
         fill="currentColor"
       >
@@ -27,7 +27,7 @@ export default function DecorativeSVG() {
           scale: [1, 1.1, 1] 
         }}
         transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-        className="absolute bottom-[10%] -right-16 w-80 h-80 text-terracotta/5 drop-shadow-sm opacity-50"
+        className="absolute bottom-[10%] -right-16 w-80 h-80 text-zinc-900/5 drop-shadow-sm opacity-50"
         viewBox="0 0 200 200"
         fill="currentColor"
       >
@@ -58,7 +58,7 @@ export default function DecorativeSVG() {
             ease: 'linear',
             delay: Math.random() * 10
           }}
-          className="absolute w-6 h-6 text-rose/10 pointer-events-none"
+          className="absolute w-6 h-6 text-gold/20 pointer-events-none"
           viewBox="0 0 24 24"
           fill="currentColor"
         >
@@ -67,7 +67,7 @@ export default function DecorativeSVG() {
       ))}
 
       {/* Background Soft Glows */}
-      <div className="absolute top-[20%] left-[20%] w-96 h-96 bg-sage/5 blur-[100px] rounded-full pointer-events-none"></div>
+      <div className="absolute top-[20%] left-[20%] w-96 h-96 bg-gold/5 blur-[100px] rounded-full pointer-events-none"></div>
       <div className="absolute bottom-[30%] right-[10%] w-[500px] h-[500px] bg-gold/5 blur-[120px] rounded-full pointer-events-none"></div>
     </div>
   );

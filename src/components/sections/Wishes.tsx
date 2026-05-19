@@ -87,28 +87,28 @@ export default function Wishes() {
           
           <form onSubmit={handleSubmit} className="flex flex-col gap-10">
             <div className="flex flex-col gap-4">
-              <label className="text-[10px] font-black tracking-[0.5em] text-gold uppercase ml-1 opacity-80">Full Name</label>
+              <label className="text-[10px] font-black tracking-[0.5em] text-gold uppercase ml-1 opacity-80">Nama Lengkap</label>
               <input 
                 type="text" 
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Ex: John Doe & Partner" 
+                placeholder="Cth: Fulan & Pasangan" 
                 className="w-full bg-white/10 border-b-2 border-zinc-200/50 px-0 py-4 focus:outline-none focus:border-gold transition-all text-lg font-bold placeholder-zinc-300 italic"
                 required 
               />
             </div>
             
             <div className="flex flex-col gap-4">
-              <label className="text-[10px] font-black tracking-[0.5em] text-gold uppercase ml-1 opacity-80">R.S.V.P</label>
+              <label className="text-[10px] font-black tracking-[0.5em] text-gold uppercase ml-1 opacity-80">Konfirmasi Kehadiran</label>
               <div className="relative">
                 <select 
                   value={attendance}
                   onChange={(e) => setAttendance(e.target.value)}
                   className="w-full bg-white/10 border-b-2 border-zinc-200/50 px-0 py-4 focus:outline-none focus:border-gold transition-all text-lg font-bold appearance-none cursor-pointer pr-12 italic"
                 >
-                  <option value="Hadir">Yes, I'll be there</option>
-                  <option value="Tidak Hadir">Sorry, I can't make it</option>
-                  <option value="Ragu-ragu">Still deciding</option>
+                  <option value="Hadir">Ya, saya akan hadir</option>
+                  <option value="Tidak Hadir">Maaf, saya tidak bisa hadir</option>
+                  <option value="Ragu-ragu">Masih ragu-ragu</option>
                 </select>
                 <div className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-gold">
                    <ChevronDown size={24} />
@@ -118,7 +118,7 @@ export default function Wishes() {
             
             <div className="flex flex-col gap-4">
               <div className="flex justify-between items-end">
-                <label className="text-[10px] font-black tracking-[0.5em] text-gold uppercase ml-1 opacity-80">Wedding Wishes</label>
+                <label className="text-[10px] font-black tracking-[0.5em] text-gold uppercase ml-1 opacity-80">Pesan & Doa</label>
                 <span className={`text-[9px] font-bold uppercase tracking-widest ${message.length > 450 ? 'text-rose' : 'text-zinc-400'}`}>
                   {message.length} / 500
                 </span>
@@ -126,23 +126,23 @@ export default function Wishes() {
               <textarea 
                 value={message}
                 onChange={(e) => setMessage(e.target.value.slice(0, 500))}
-                placeholder="Send your warmest wishes..." 
+                placeholder="Tuliskan pesan & doa terbaik Anda..." 
                 className="w-full h-44 bg-zinc-50/50 border border-zinc-200/50 p-6 rounded-[var(--radius-premium)] focus:outline-none focus:ring-4 focus:ring-gold/5 focus:border-gold/30 transition-all text-lg font-medium leading-relaxed italic placeholder-zinc-300"
                 required 
               ></textarea>
             </div>
             
             <motion.button 
-              whileHover={{ scale: 1.05, y: -4, boxShadow: "0 20px 40px rgba(0,0,0,0.15)" }}
+              whileHover={{ scale: 1.05, y: -4, boxShadow: "0 25px 50px rgba(212,175,55,0.4)" }}
               whileTap={{ scale: 0.95 }}
               type="submit"
               disabled={isSubmitting || submitted}
-              className="premium-button w-full bg-zinc-900 text-white font-black py-6 mt-6 flex items-center justify-center gap-4 uppercase tracking-[0.4em] text-xs disabled:opacity-70 disabled:cursor-not-allowed group transition-all"
+              className="premium-button w-full bg-gold text-zinc-900 font-black py-6 mt-6 flex items-center justify-center gap-4 uppercase tracking-[0.4em] text-xs disabled:opacity-70 disabled:cursor-not-allowed group transition-all shadow-[0_10px_40px_rgba(212,175,55,0.4)] border border-transparent hover:border-white/50"
             >
               {submitted ? (
-                <><CheckCircle2 size={24} className="text-gold" /> Success</>
+                <><CheckCircle2 size={24} className="text-zinc-900" /> Berhasil</>
               ) : (
-                <><Send size={20} className="group-hover:translate-x-2 group-hover:-translate-y-2 transition-transform" /> Submit Wishes</>
+                <><Send size={20} className="group-hover:translate-x-2 group-hover:-translate-y-2 transition-transform" /> Kirim Pesan</>
               )}
             </motion.button>
           </form>
@@ -159,25 +159,25 @@ export default function Wishes() {
           <div className="flex flex-col mb-10 px-4 space-y-6">
             <div className="flex justify-between items-end">
               <div>
-                <p className="text-gold text-[9px] font-black tracking-[0.4em] uppercase mb-2">Guest Book</p>
+                <p className="text-gold text-[9px] font-black tracking-[0.4em] uppercase mb-2">Buku Tamu</p>
                 <h3 className="font-serif text-2xl md:text-4xl text-zinc-800 drop-shadow-sm font-bold tracking-tight italic">Pesan Doa</h3>
               </div>
               <div className="bg-white/40 backdrop-blur-xl text-gold border border-gold/10 px-6 py-2 rounded-[var(--radius-minimal)] text-[10px] font-black tracking-[0.3em] uppercase shadow-sm">
-                {wishes.length} Posts
+                {wishes.length} Pesan
               </div>
             </div>
             
             {/* Quick RSVP Summary */}
             <div className="grid grid-cols-3 gap-3">
-              <div className="bg-sage/5 border border-sage/10 p-3 rounded-lg text-center flex flex-col items-center">
-                <span className="text-sage text-lg font-black leading-none">{stats.hadir}</span>
-                <span className="text-[7px] text-sage font-bold uppercase tracking-wider mt-1">Hadir</span>
+              <div className="bg-gold/5 border border-gold/10 p-3 rounded-lg text-center flex flex-col items-center group hover:bg-gold/10 transition-colors">
+                <span className="text-gold text-lg font-black leading-none">{stats.hadir}</span>
+                <span className="text-[7px] text-gold font-bold uppercase tracking-wider mt-1">Hadir</span>
               </div>
-              <div className="bg-gold/5 border border-gold/10 p-3 rounded-lg text-center flex flex-col items-center">
-                <span className="text-gold text-lg font-black leading-none">{stats.ragu}</span>
-                <span className="text-[7px] text-gold font-bold uppercase tracking-wider mt-1">Ragu</span>
+              <div className="bg-zinc-100/50 border border-zinc-200/50 p-3 rounded-lg text-center flex flex-col items-center transition-colors">
+                <span className="text-zinc-500 text-lg font-black leading-none">{stats.ragu}</span>
+                <span className="text-[7px] text-zinc-400 font-bold uppercase tracking-wider mt-1">Ragu</span>
               </div>
-              <div className="bg-zinc-50 border border-zinc-200 p-3 rounded-lg text-center flex flex-col items-center">
+              <div className="bg-zinc-100/50 border border-zinc-200/50 p-3 rounded-lg text-center flex flex-col items-center transition-colors">
                 <span className="text-zinc-500 text-lg font-black leading-none">{stats.tidak}</span>
                 <span className="text-[7px] text-zinc-400 font-bold uppercase tracking-wider mt-1">Tidak</span>
               </div>
@@ -203,8 +203,8 @@ export default function Wishes() {
                   <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
                     <div className="flex items-center gap-3">
                        <span className="font-serif font-black text-zinc-900 tracking-tight text-xl italic">{wish.name}</span>
-                       <span className={`text-[8px] uppercase tracking-[0.3em] font-black px-4 py-1.5 rounded-[var(--radius-minimal)] border shadow-sm ${
-                         wish.attendance === 'Hadir' ? 'bg-sage/10 text-sage border-sage/10' : 'bg-zinc-100 text-zinc-400 border-zinc-200/50'
+                       <span className={`text-[8px] uppercase tracking-[0.3em] font-black px-4 py-1.5 rounded-[var(--radius-minimal)] border shadow-sm transition-colors ${
+                         wish.attendance === 'Hadir' ? 'bg-gold/10 text-gold border-gold/20' : 'bg-zinc-100/50 text-zinc-500 border-zinc-200/50'
                        }`}>
                          {wish.attendance}
                        </span>

@@ -47,13 +47,13 @@ export default function Gift() {
 
         <button
           onClick={() => copyToClipboard(info, id)}
-          className={`premium-button flex items-center justify-center gap-5 w-full py-6 text-[10px] font-black tracking-[0.4em] uppercase transition-all duration-1000 ${
+          className={`premium-button flex items-center justify-center gap-5 w-full py-6 text-[10px] font-black tracking-[0.4em] uppercase transition-all duration-500 min-h-[64px] border border-transparent ${
             copiedBank === id 
-            ? 'bg-zinc-800 text-white shadow-zinc-900/30' 
-            : 'bg-zinc-900 text-white hover:bg-gold hover:shadow-gold/30 hover:-translate-y-2'
+            ? 'bg-white text-zinc-900 shadow-xl' 
+            : 'bg-gold text-zinc-900 shadow-[0_10px_40px_rgba(212,175,55,0.4)] hover:border-white/50 hover:bg-gold/90 hover:-translate-y-2'
           }`}
         >
-          {copiedBank === id ? <Check size={20} className="text-white" /> : <Copy size={18} />}
+          {copiedBank === id ? <Check size={20} className="text-zinc-900" /> : <Copy size={18} />}
           <span>{copiedBank === id ? 'Copied' : 'Copy Number'}</span>
         </button>
 

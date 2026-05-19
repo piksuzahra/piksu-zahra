@@ -2,8 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { LogOut, Plus, Send, Copy, Check, Trash2 } from 'lucide-react';
 import { db, handleFirestoreError, OperationType } from '../../lib/firebase';
 import { collection, addDoc, query, where, onSnapshot, orderBy, serverTimestamp, updateDoc, doc, deleteDoc } from 'firebase/firestore';
+import { useAppText } from '../../lib/store';
 
 export default function SenderDashboard({ role, onLogout }: { role: string; onLogout: () => void }) {
+  const [waTemplateCouple] = useAppText('waTemplateCouple', 'Tanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i [NAMA] untuk hadir di acara pernikahan kami.\n\nAkses undangan: [LINK]');
+  const [waTemplateOrtu] = useAppText('waTemplateOrtu', 'Bismillah, Mohon doa restu dan kehadirannya pada pernikahan putra/putri kami. Kepada Yth. [NAMA].\n\nDetail acara: [LINK]');
+
   const [guests, setGuests] = useState<{ id: string, name: string, sent: boolean }[]>([]);
   const [newName, setNewName] = useState('');
   const [editingGuest, setEditingGuest] = useState<{ id: string, name: string } | null>(null);
@@ -69,30 +73,34 @@ export default function SenderDashboard({ role, onLogout }: { role: string; onLo
     }
   };
 
-  const getWAUrl = (name: string) => {
+  const getWAUrl = (name: string, id: string) => {
     const baseUrl = window.location.origin;
-    const encodedName = encodeURIComponent(name);
-    const link = `${baseUrl}?to=${encodedName}`;
+    const link = `${baseUrl}?token=${id}`;
     
     // Different message template based on role
-    const template = role.includes('ortu') 
-      ? `Bismillah, Mohon doa restu dan kehadirannya pada pernikahan putra/putri kami.\nKepada Yth. *${name}*.\n\nAkses undangan lengkap: ${link}`
-      : `Tanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i *${name}* untuk hadir di acara pernikahan kami.\n\nAkses undangan: ${link}`;
+    let template = role.includes('ortu') ? waTemplateOrtu : waTemplateCouple;
       
-    return `https://wa.me/?text=${encodeURIComponent(template)}`;
+    // Replace placeholders
+    template = template.replace(/\[NAMA\]/g, `*${name}*`).replace(/\[LINK\]/g, link);
+
+    // Use api.whatsapp.com for better fallback support
+    return `https://api.whatsapp.com/send?text=${encodeURIComponent(template)}`;
   };
 
   const handleSend = async (id: string, name: string) => {
+    // Open window synchronously to avoid popup blocker
+    const url = getWAUrl(name, id);
+    window.open(url, '_blank');
+    
     try {
       await updateDoc(doc(db, 'guests', id), { sent: true });
-      window.open(getWAUrl(name), '_blank');
     } catch (err) {
       handleFirestoreError(err, OperationType.UPDATE, 'guests');
     }
   };
 
   const copyLink = (name: string, id: string) => {
-    const link = `${window.location.origin}?to=${encodeURIComponent(name)}`;
+    const link = `${window.location.origin}?token=${id}`;
     navigator.clipboard.writeText(link);
     setCopiedId(id);
     setTimeout(() => setCopiedId(null), 2000);

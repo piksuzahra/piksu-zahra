@@ -23,10 +23,10 @@ export default function Greeting() {
     <section className="relative flex flex-col items-center justify-center py-24 md:py-32 px-6 overflow-hidden min-h-[60vh]">
       <DecorativeSVG />
       {/* Floating Elements */}
-      <motion.div variants={floatVar} animate="animate" className="absolute top-20 left-10 text-sage opacity-20 drop-shadow-sm z-10">
+      <motion.div variants={floatVar} animate="animate" className="absolute top-20 left-10 text-gold opacity-30 drop-shadow-sm z-10">
         <Leaf size={100} strokeWidth={0.5} />
       </motion.div>
-      <motion.div variants={floatVar} animate="animate" className="absolute bottom-20 right-10 text-rose opacity-20 scale-x-[-1] drop-shadow-sm z-10">
+      <motion.div variants={floatVar} animate="animate" className="absolute bottom-20 right-10 text-gold opacity-30 scale-x-[-1] drop-shadow-sm z-10">
         <Leaf size={120} strokeWidth={0.5} />
       </motion.div>
       
@@ -66,7 +66,7 @@ export default function Greeting() {
                  ></motion.div>
                ))}
             </div>
-            <h2 className="font-serif italic text-4xl md:text-6xl text-zinc-900 drop-shadow-sm font-black tracking-tight leading-tight mb-4">{greetingVerse}</h2>
+            <h2 className="font-serif italic text-2xl md:text-3xl text-zinc-900 drop-shadow-sm font-black tracking-tight leading-tight mb-4">{greetingVerse}</h2>
             <div className="w-16 h-1 bg-gold/20 mx-auto rounded-full"></div>
           </motion.div>
           
@@ -76,7 +76,7 @@ export default function Greeting() {
             viewport={{ once: true }}
             transition={{ duration: 1.5, delay: 0.6 }}
           >
-            <p className="text-zinc-800 leading-[1.8] font-medium text-center text-xl md:text-3xl mb-16 italic tracking-tight opacity-95 max-w-[90%] mx-auto">
+            <p className="text-zinc-800 leading-[1.8] font-medium text-center text-sm md:text-lg mb-12 italic tracking-tight opacity-95 max-w-[90%] mx-auto">
               {greetingText}
             </p>
           </motion.div>

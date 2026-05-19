@@ -82,30 +82,30 @@ export default function Events() {
               <motion.div 
                 animate={{ 
                   y: [0, -12, 0],
-                  boxShadow: ["0 15px 30px rgba(0,0,0,0.05)", "0 25px 50px rgba(130, 148, 122, 0.2)", "0 15px 30px rgba(0,0,0,0.05)"]
+                  boxShadow: ["0 15px 30px rgba(0,0,0,0.05)", "0 25px 50px rgba(212, 175, 55, 0.2)", "0 15px 30px rgba(0,0,0,0.05)"]
                 }} 
                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }} 
-                className="w-14 h-14 md:w-24 md:h-24 bg-white/60 backdrop-blur-2xl rounded-3xl border-[2px] border-white flex flex-col justify-center items-center overflow-hidden relative shadow-2xl"
+                className="w-14 h-14 md:w-24 md:h-24 bg-white/60 backdrop-blur-2xl rounded-3xl border-[2px] border-white flex flex-col justify-center items-center overflow-hidden relative shadow-2xl hover:border-gold/30 transition-colors"
               >
-                <div className="w-full h-1 bg-sage absolute top-0"></div>
-                <span className="text-[8px] md:text-[10px] text-sage font-black uppercase tracking-[0.3em] mt-0.5">JULI</span>
+                <div className="w-full h-1 bg-gold absolute top-0"></div>
+                <span className="text-[8px] md:text-[10px] text-zinc-500 font-black uppercase tracking-[0.3em] mt-0.5">JULI</span>
                 <span className="text-2xl md:text-4xl font-serif font-black text-zinc-900 tracking-tighter leading-none">05</span>
               </motion.div>
             </div>
             
             <div className="pl-24 md:pl-0 md:w-1/2 pt-2 text-left relative">
-               <div className="absolute left-7 md:left-auto md:-left-[10px] top-10 w-5 h-5 rounded-[var(--radius-minimal)] bg-white border-4 border-sage shadow-xl z-30 hidden md:block"></div>
+               <div className="absolute left-7 md:left-auto md:-left-[10px] top-10 w-5 h-5 rounded-[var(--radius-minimal)] bg-white border-4 border-gold shadow-xl z-30 hidden md:block"></div>
                <motion.div 
                  initial={{ opacity: 0, x: 20 }}
                  whileInView={{ opacity: 1, x: 0 }}
                  transition={{ delay: 0.3, duration: 1, ease: [0.22, 1, 0.36, 1] }}
                  className="glass-card p-10 md:p-16 shadow-[0_40px_80px_rgba(0,0,0,0.06)] border-white/80 shine-effect group"
                >
-                <h4 className="text-sage font-black tracking-[0.5em] uppercase text-[9px] md:text-xs mb-4 opacity-70">The Holy Matrimony</h4>
+                <h4 className="text-gold font-black tracking-[0.5em] uppercase text-[9px] md:text-xs mb-4 opacity-90 drop-shadow-sm">The Holy Matrimony</h4>
                 <h3 className="font-serif text-3xl md:text-5xl text-zinc-900 font-bold drop-shadow-sm mb-8 leading-tight italic tracking-tighter">{event1Title || 'Akad Nikah'}</h3>
                 <div className="space-y-6">
                   <div className="flex items-center gap-5 text-zinc-600">
-                    <div className="w-12 h-12 rounded-[var(--radius-minimal)] bg-sage/5 flex items-center justify-center text-sage shrink-0 border border-sage/10 group-hover:bg-sage group-hover:text-white transition-all duration-700 shadow-sm">
+                    <div className="w-12 h-12 rounded-[var(--radius-minimal)] bg-gold/5 flex items-center justify-center text-gold shrink-0 border border-gold/20 group-hover:bg-gold group-hover:text-zinc-900 transition-all duration-700 shadow-sm">
                       <Clock size={20} />
                     </div>
                     <div>
@@ -114,7 +114,7 @@ export default function Events() {
                     </div>
                   </div>
                   <div className="flex items-center gap-5 text-zinc-600">
-                    <div className="w-12 h-12 rounded-[var(--radius-minimal)] bg-sage/5 flex items-center justify-center text-sage shrink-0 border border-sage/10 group-hover:bg-sage group-hover:text-white transition-all duration-700 shadow-sm">
+                    <div className="w-12 h-12 rounded-[var(--radius-minimal)] bg-gold/5 flex items-center justify-center text-gold shrink-0 border border-gold/20 group-hover:bg-gold group-hover:text-zinc-900 transition-all duration-700 shadow-sm">
                       <MapPin size={20} />
                     </div>
                     <div>
@@ -139,30 +139,30 @@ export default function Events() {
               <motion.div 
                 animate={{ 
                   y: [0, 12, 0],
-                  boxShadow: ["0 15px 30px rgba(0,0,0,0.05)", "0 25px 50px rgba(184, 98, 77, 0.2)", "0 15px 30px rgba(0,0,0,0.05)"]
+                  boxShadow: ["0 15px 30px rgba(0,0,0,0.05)", "0 25px 50px rgba(212, 175, 55, 0.2)", "0 15px 30px rgba(0,0,0,0.05)"]
                 }} 
                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }} 
-                className="w-14 h-14 md:w-24 md:h-24 bg-white/60 backdrop-blur-2xl rounded-3xl border-[2px] border-white flex flex-col justify-center items-center overflow-hidden relative shadow-2xl"
+                className="w-14 h-14 md:w-24 md:h-24 bg-white/60 backdrop-blur-2xl rounded-3xl border-[2px] border-white flex flex-col justify-center items-center overflow-hidden relative shadow-2xl hover:border-gold/30 transition-colors"
               >
-                <div className="w-full h-1 bg-terracotta absolute top-0"></div>
-                <span className="text-[8px] md:text-[10px] text-terracotta font-black uppercase tracking-[0.3em] mt-0.5">JULI</span>
+                <div className="w-full h-1 bg-gold absolute top-0"></div>
+                <span className="text-[8px] md:text-[10px] text-zinc-500 font-black uppercase tracking-[0.3em] mt-0.5">JULI</span>
                 <span className="text-2xl md:text-4xl font-serif font-black text-zinc-900 tracking-tighter leading-none">05</span>
               </motion.div>
             </div>
             
             <div className="pl-24 md:pl-0 md:w-1/2 pt-2 text-left md:text-right relative">
-               <div className="absolute left-7 md:auto md:-right-[10px] top-10 w-5 h-5 rounded-[var(--radius-minimal)] bg-white border-4 border-terracotta shadow-xl z-30 hidden md:block"></div>
+               <div className="absolute left-7 md:auto md:-right-[10px] top-10 w-5 h-5 rounded-[var(--radius-minimal)] bg-white border-4 border-gold shadow-xl z-30 hidden md:block"></div>
                <motion.div 
                  initial={{ opacity: 0, x: -20 }}
                  whileInView={{ opacity: 1, x: 0 }}
                  transition={{ delay: 0.5, duration: 1, ease: [0.22, 1, 0.36, 1] }}
                  className="glass-card p-10 md:p-16 shadow-[0_40px_80px_rgba(0,0,0,0.06)] border-white/80 shine-effect group"
                >
-                <h4 className="text-terracotta font-black tracking-[0.5em] uppercase text-[9px] md:text-xs mb-4 opacity-70">Wedding Celebration</h4>
-                <h3 className="font-serif text-3xl md:text-5xl text-terracotta font-bold drop-shadow-sm mb-8 leading-tight italic tracking-tighter">{event2Title || 'Resepsi'}</h3>
+                <h4 className="text-gold font-black tracking-[0.5em] uppercase text-[9px] md:text-xs mb-4 opacity-90 drop-shadow-sm">Wedding Celebration</h4>
+                <h3 className="font-serif text-3xl md:text-5xl text-zinc-900 font-bold drop-shadow-sm mb-8 leading-tight italic tracking-tighter">{event2Title || 'Resepsi'}</h3>
                 <div className="space-y-6 md:items-end flex flex-col">
                    <div className="flex items-center md:flex-row-reverse gap-5 text-zinc-600 w-full md:w-auto">
-                     <div className="w-12 h-12 rounded-[var(--radius-minimal)] bg-terracotta/5 flex items-center justify-center text-terracotta shrink-0 border border-terracotta/10 group-hover:bg-terracotta group-hover:text-white transition-all duration-700 shadow-sm">
+                     <div className="w-12 h-12 rounded-[var(--radius-minimal)] bg-gold/10 flex items-center justify-center text-gold shrink-0 border border-gold/20 group-hover:bg-gold group-hover:text-zinc-900 transition-all duration-700 shadow-sm">
                        <Clock size={20} />
                      </div>
                      <div>
@@ -171,7 +171,7 @@ export default function Events() {
                      </div>
                    </div>
                    <div className="flex items-center md:flex-row-reverse gap-5 text-zinc-600 w-full md:w-auto">
-                     <div className="w-12 h-12 rounded-[var(--radius-minimal)] bg-terracotta/5 flex items-center justify-center text-terracotta shrink-0 border border-terracotta/10 group-hover:bg-terracotta group-hover:text-white transition-all duration-700 shadow-sm">
+                     <div className="w-12 h-12 rounded-[var(--radius-minimal)] bg-gold/10 flex items-center justify-center text-gold shrink-0 border border-gold/20 group-hover:bg-gold group-hover:text-zinc-900 transition-all duration-700 shadow-sm">
                        <MapPin size={20} />
                      </div>
                      <div>
@@ -181,42 +181,16 @@ export default function Events() {
                    </div>
                    {event2Entertainment && (
                      <div className="flex items-center md:flex-row-reverse gap-5 text-zinc-600 w-full md:w-auto">
-                       <div className="w-12 h-12 rounded-[var(--radius-minimal)] bg-terracotta/5 flex items-center justify-center text-terracotta shrink-0 border border-terracotta/10 group-hover:bg-terracotta group-hover:text-white transition-all duration-700 shadow-sm">
+                       <div className="w-12 h-12 rounded-[var(--radius-minimal)] bg-gold/10 flex items-center justify-center text-gold shrink-0 border border-gold/20 group-hover:bg-gold group-hover:text-zinc-900 transition-all duration-700 shadow-sm">
                          <Music size={20} />
                        </div>
                        <div>
                          <p className="text-[9px] text-zinc-400 font-black uppercase tracking-[0.2em] mb-1 md:text-right">Hiburan</p>
-                         <p className="font-black text-terracotta tracking-[0.3em] text-lg uppercase italic drop-shadow-sm">{event2Entertainment}</p>
+                         <p className="font-black text-gold tracking-[0.3em] text-lg uppercase italic drop-shadow-sm">{event2Entertainment}</p>
                        </div>
                      </div>
                    )}
                 </div>
-               </motion.div>
-               {/* Detail Alamat Resepsi Card */}
-               <motion.div
-                 initial={{ opacity: 0, y: 20 }}
-                 whileInView={{ opacity: 1, y: 0 }}
-                 viewport={{ once: true }}
-                 transition={{ delay: 0.6, duration: 1 }}
-                 className="mt-8 glass-card p-8 shadow-sm relative overflow-hidden group border-terracotta/20"
-               >
-                 <div className="absolute top-0 left-0 w-1 h-full bg-terracotta/40"></div>
-                 <div className="flex items-start gap-4">
-                   <div className="w-10 h-10 rounded-[var(--radius-minimal)] bg-terracotta/10 text-terracotta flex items-center justify-center shrink-0">
-                     <MapPin size={20} />
-                   </div>
-                   <div className="text-left">
-                     <h4 className="text-zinc-800 font-serif font-black italic text-lg mb-2">{event2Location}</h4>
-                     <p className="text-zinc-500 text-sm leading-relaxed font-bold tracking-tight italic opacity-80">
-                       {event2Location === 'Gedung Ratu Elok' ? (
-                         <>
-                           Jl. Raya Utama No. 88, Desa Ratu Elok<br/>
-                           Kec. Maju Jaya, Kota Indah, 12345
-                         </>
-                       ) : 'Alamat lengkap dapat dilihat pada peta di bawah'}
-                     </p>
-                   </div>
-                 </div>
                </motion.div>
             </div>
           </motion.div>
@@ -241,8 +215,8 @@ export default function Events() {
           animate="animate"
           className="relative z-10"
         >
-          <div className="w-20 h-px bg-gradient-to-r from-transparent via-gold/50 to-transparent mx-auto mb-6"></div>
-          <p className="text-gold font-serif text-4xl md:text-5xl drop-shadow-sm font-black tracking-tight italic">
+          <div className="w-16 h-px bg-gradient-to-r from-transparent via-gold/50 to-transparent mx-auto mb-4"></div>
+          <p className="text-gold font-serif text-3xl md:text-4xl drop-shadow-sm font-black tracking-tight italic">
             Terima Kasih
           </p>
         </motion.div>
@@ -254,27 +228,27 @@ export default function Events() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-50px" }}
         transition={{ duration: 0.8 }}
-        className="mt-24 max-w-2xl mx-auto text-center w-full px-6"
+        className="mt-16 max-w-2xl mx-auto text-center w-full px-6"
       >
-        <p className="text-[9px] font-black tracking-[0.6em] text-gold uppercase mb-12 drop-shadow-sm flex items-center justify-center gap-4">
+        <p className="text-[9px] font-black tracking-[0.6em] text-gold uppercase mb-8 drop-shadow-sm flex items-center justify-center gap-4">
            <span className="w-8 h-px bg-gold/30"></span>
            Turut Mengundang
            <span className="w-8 h-px bg-gold/30"></span>
         </p>
-        <div className="flex flex-col md:flex-row gap-4 md:gap-6 justify-center">
+        <div className="flex flex-row gap-2 md:gap-4 justify-center">
           <motion.button 
-            whileHover={{ scale: 1.02, y: -4, backgroundColor: '#000' }}
+            whileHover={{ scale: 1.02, y: -4, backgroundColor: '#c5a028' }}
             whileTap={{ scale: 0.98 }}
             onClick={() => setShowGuests('pria')}
-            className="flex-1 py-4 md:py-6 bg-zinc-900 text-white font-black text-[10px] tracking-[0.4em] rounded-full uppercase cursor-pointer border border-white/5 shadow-2xl transition-all"
+            className="flex-1 py-3 md:py-5 bg-gold text-zinc-900 font-black text-[9px] md:text-sm tracking-wider uppercase rounded-full flex items-center justify-center cursor-pointer border border-transparent shadow-[0_10px_30px_rgba(212,175,55,0.4)] transition-all hover:border-white/50"
           >
             Keluarga Mempelai Pria
           </motion.button>
           <motion.button 
-            whileHover={{ scale: 1.02, y: -4, backgroundColor: '#000' }}
+            whileHover={{ scale: 1.02, y: -4, backgroundColor: '#c5a028' }}
             whileTap={{ scale: 0.98 }}
             onClick={() => setShowGuests('wanita')}
-            className="flex-1 py-4 md:py-6 bg-zinc-900 text-white font-black text-[10px] tracking-[0.4em] rounded-full uppercase cursor-pointer border border-white/5 shadow-2xl transition-all"
+            className="flex-1 py-3 md:py-5 bg-gold text-zinc-900 font-black text-[9px] md:text-sm tracking-wider uppercase rounded-full flex items-center justify-center cursor-pointer border border-transparent shadow-[0_10px_30px_rgba(212,175,55,0.4)] transition-all hover:border-white/50"
           >
             Keluarga Mempelai Wanita
           </motion.button>
@@ -306,7 +280,7 @@ export default function Events() {
                 <X size={24} />
               </button>
               
-              <h4 className="font-serif text-4xl text-zinc-800 mb-8 text-center border-b border-gold/10 pb-8 mt-4 font-black tracking-tight italic shrink-0">
+              <h4 className="font-serif text-3xl md:text-4xl text-zinc-800 mb-8 text-center border-b border-gold/10 pb-8 mt-4 font-black tracking-tight italic shrink-0 uppercase">
                 {showGuests === 'pria' ? 'Keluarga Pria' : 'Keluarga Wanita'}
               </h4>
               <div className="overflow-y-auto custom-scrollbar pr-4 -mr-4 scroll-smooth">

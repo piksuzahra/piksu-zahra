@@ -29,7 +29,7 @@ export default function SectionTitle({ title, subtitle }: { title: string, subti
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 1.2, delay: 0.2 }}
-        className="font-serif text-4xl md:text-6xl text-zinc-900 mb-8 font-black drop-shadow-sm tracking-tighter italic leading-none relative group cursor-default"
+        className="font-serif text-3xl md:text-5xl text-zinc-900 mb-6 font-black drop-shadow-sm tracking-tighter italic leading-none relative group cursor-default"
       >
         <div className="absolute -inset-x-12 -inset-y-4 bg-gold/5 scale-x-0 group-hover:scale-x-100 transition-transform duration-1000 origin-center blur-2xl rounded-[100%]"></div>
         <motion.span

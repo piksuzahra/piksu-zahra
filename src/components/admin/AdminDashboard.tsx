@@ -54,6 +54,8 @@ export default function AdminDashboard({ role, onLogout }: { role: string; onLog
   const [contentFontUrl, setContentFontUrl] = useAppText('contentFontUrl', '');
   const [eventsTitle, setEventsTitle] = useAppText('eventsTitle', 'Rangkaian Acara');
   const [eventsSubtitle, setEventsSubtitle] = useAppText('eventsSubtitle', 'Waktu & Tempat');
+  const [waTemplateCouple, setWaTemplateCouple] = useAppText('waTemplateCouple', 'Tanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i [NAMA] untuk hadir di acara pernikahan kami.\n\nAkses undangan: [LINK]');
+  const [waTemplateOrtu, setWaTemplateOrtu] = useAppText('waTemplateOrtu', 'Bismillah, Mohon doa restu dan kehadirannya pada pernikahan putra/putri kami. Kepada Yth. [NAMA].\n\nDetail acara: [LINK]');
   const [wishes, setWishes] = React.useState<any[]>([]);
 
   useEffect(() => {
@@ -734,17 +736,22 @@ export default function AdminDashboard({ role, onLogout }: { role: string; onLog
                     <label className="block text-sm font-medium text-zinc-700 mb-2">Template Couple</label>
                     <textarea 
                        className="w-full h-32 border border-zinc-300 rounded-lg p-3 outline-none focus:border-sage text-sm"
-                       defaultValue={"Tanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i [NAMA] untuk hadir di acara pernikahan kami.\n\nAkses undangan: [LINK]"}
+                       value={waTemplateCouple}
+                       onChange={(e) => setWaTemplateCouple(e.target.value)}
                     ></textarea>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-zinc-700 mb-2">Template Orang Tua</label>
                     <textarea 
                        className="w-full h-32 border border-zinc-300 rounded-lg p-3 outline-none focus:border-sage text-sm"
-                       defaultValue={"Bismillah, Mohon doa restu dan kehadirannya pada pernikahan putra/putri kami. Kepada Yth. [NAMA].\n\nDetail acara: [LINK]"}
+                       value={waTemplateOrtu}
+                       onChange={(e) => setWaTemplateOrtu(e.target.value)}
                     ></textarea>
                   </div>
-                  <button className="bg-zinc-800 text-white px-6 py-2 rounded-lg text-sm hover:bg-zinc-700">Save Templates</button>
+                  <button onClick={() => {
+                    setSaveStatus('saved');
+                    setTimeout(() => setSaveStatus('idle'), 3000);
+                  }} className="bg-zinc-800 text-white px-6 py-2 rounded-lg text-sm hover:bg-zinc-700">Tersimpan Otomatis</button>
                 </div>
               </div>
             )}

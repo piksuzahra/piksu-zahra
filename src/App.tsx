@@ -127,7 +127,7 @@ export default function App() {
   return (
     <>
       <DynamicFontLoader />
-      <div className="font-sans text-zinc-800 bg-[#FAF8F5] min-h-screen selection:bg-rose/30 overflow-x-hidden relative">
+      <div className="font-sans text-zinc-800 bg-[#FAF8F5] min-h-screen selection:bg-gold/20 overflow-x-hidden relative">
       <AnimatePresence>
         {/* Global seamless blobs to unify the pages */}
         {opened && (
@@ -136,8 +136,8 @@ export default function App() {
              animate={{ opacity: 1 }}
              transition={{ duration: 2 }}
           >
-            <div className="fixed top-[10%] left-[-10%] w-[600px] h-[600px] bg-sage/5 rounded-full blur-[120px] pointer-events-none z-0"></div>
-            <div className="fixed top-[50%] right-[-10%] w-[500px] h-[500px] bg-rose/5 rounded-full blur-[100px] pointer-events-none z-0"></div>
+            <div className="fixed top-[10%] left-[-10%] w-[600px] h-[600px] bg-gold/5 rounded-full blur-[120px] pointer-events-none z-0"></div>
+            <div className="fixed top-[50%] right-[-10%] w-[500px] h-[500px] bg-zinc-900/5 rounded-full blur-[100px] pointer-events-none z-0"></div>
             <div className="fixed bottom-[-10%] left-[20%] w-[700px] h-[700px] bg-gold/5 rounded-full blur-[150px] pointer-events-none z-0"></div>
           </motion.div>
         )}

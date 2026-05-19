@@ -11,7 +11,7 @@ const CircularFrame = ({ children, isReversed, image, onUpload }: { children: Re
     whileInView={{ opacity: 1, scale: 1 }}
     viewport={{ once: true, margin: "-50px" }}
     transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-    className="relative w-32 h-32 md:w-44 md:h-44 my-4 md:my-6 mx-auto flex items-center justify-center p-3"
+    className="relative w-40 h-40 md:w-56 md:h-56 my-4 md:my-6 mx-auto flex items-center justify-center p-3"
   >
     {/* External Animated Ornaments */}
     <motion.div 
@@ -49,13 +49,13 @@ const CircularFrame = ({ children, isReversed, image, onUpload }: { children: Re
     <motion.div
       animate={{ 
         boxShadow: [
-          "0 0 20px rgba(184, 98, 77, 0.1)", 
-          "0 0 40px rgba(184, 98, 77, 0.2)", 
-          "0 0 20px rgba(184, 98, 77, 0.1)"
+          "0 0 20px rgba(212, 175, 55, 0.1)", 
+          "0 0 40px rgba(212, 175, 55, 0.2)", 
+          "0 0 20px rgba(212, 175, 55, 0.1)"
         ]
       }}
       transition={{ duration: 4, repeat: Infinity }}
-      className={`absolute inset-2 rounded-full z-10 pointer-events-none bg-gradient-to-tr ${isReversed ? 'from-terracotta/5 to-sage/5' : 'from-sage/5 to-gold/5'}`}
+      className={`absolute inset-2 rounded-full z-10 pointer-events-none bg-gradient-to-tr ${isReversed ? 'from-gold/5 to-zinc-900/5' : 'from-zinc-900/5 to-gold/5'}`}
     />
 
     {/* The Portrait Frame */}
@@ -74,7 +74,7 @@ const CircularFrame = ({ children, isReversed, image, onUpload }: { children: Re
             className="w-full h-full object-cover pointer-events-none group-hover:scale-110 transition-transform duration-[4s] ease-out" 
           />
         ) : (
-          <div className={`w-full h-full bg-gradient-to-tr ${isReversed ? 'from-zinc-100 to-sage/10' : 'from-zinc-100 to-gold/10'} flex justify-center items-center pointer-events-none`}>
+          <div className={`w-full h-full bg-gradient-to-tr ${isReversed ? 'from-zinc-100 to-gold/10' : 'from-zinc-100 to-zinc-900/10'} flex justify-center items-center pointer-events-none`}>
              <motion.div 
                animate={{ y: [0, -4, 0] }}
                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
@@ -132,16 +132,16 @@ export default function Couple() {
     <section className="py-24 px-6 flex flex-col items-center overflow-hidden relative">
       <DecorativeSVG />
       
-      <div className="absolute top-1/4 -right-20 w-80 h-80 bg-sage/5 blur-[100px] rounded-full pointer-events-none"></div>
-      <div className="absolute bottom-1/4 -left-20 w-80 h-80 bg-terracotta/5 blur-[100px] rounded-full pointer-events-none"></div>
+      <div className="absolute top-1/4 -right-20 w-80 h-80 bg-gold/5 blur-[100px] rounded-full pointer-events-none"></div>
+      <div className="absolute bottom-1/4 -left-20 w-80 h-80 bg-zinc-900/5 blur-[100px] rounded-full pointer-events-none"></div>
 
       <SectionTitle title="Sang Mempelai" subtitle="Pasangan Berbahagia" />
 
       <div className="flex flex-col gap-12 md:gap-24 w-full max-w-3xl mt-8 relative z-10">
         
         {/* Wanita -> Teks Kanan, Foto Kiri on desktop */}
-        <div className="flex flex-col md:flex-row items-center gap-8 md:gap-20 w-full mb-20 md:mb-40">
-          <div className="shrink-0 scale-110 md:scale-150">
+        <div className="flex flex-col md:flex-row items-center gap-6 md:gap-16 w-full mb-16 md:mb-24">
+          <div className="shrink-0">
             <CircularFrame image={wanitaPhoto} onUpload={(e) => handlePhotoUpload(e, setWanitaPhoto, 'wanitaPhoto')}>
               {brideInitial}
             </CircularFrame>
@@ -153,10 +153,10 @@ export default function Couple() {
             transition={{ duration: 1.2, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
             className="text-center md:text-left flex-1 px-4"
           >
-            <h4 className="text-gold font-serif italic text-sm md:text-lg mb-4 tracking-[0.3em] font-black uppercase drop-shadow-sm">Mempelai Wanita</h4>
-            <h3 className="font-serif text-3xl md:text-5xl text-zinc-900 mb-8 font-black drop-shadow-md leading-none tracking-tighter italic">{brideFull}</h3>
-            <div className="w-20 h-1 bg-gradient-to-r from-gold/40 to-transparent mb-8 hidden md:block rounded-full"></div>
-            <p className="text-base md:text-lg min-h-[3em] text-zinc-600 font-bold leading-relaxed italic tracking-tight mb-8" dangerouslySetInnerHTML={{ __html: brideDesc ? brideDesc.replace(/\\n/g, '<br/>') : '' }} />
+            <h4 className="text-gold font-serif italic text-xs md:text-sm mb-3 tracking-[0.3em] font-black uppercase drop-shadow-sm">Mempelai Wanita</h4>
+            <h3 className="font-serif text-3xl md:text-5xl text-zinc-900 mb-4 font-black drop-shadow-md leading-tight tracking-tighter italic">{brideFull}</h3>
+            <div className="w-16 h-1 bg-gradient-to-r from-gold/40 to-transparent mb-4 hidden md:block rounded-full"></div>
+            <p className="text-sm md:text-base min-h-[3em] text-zinc-600 font-bold leading-relaxed italic tracking-tight mb-6" dangerouslySetInnerHTML={{ __html: brideDesc ? brideDesc.replace(/\\n/g, '<br/>') : '' }} />
             
             <motion.a
               whileHover={{ scale: 1.05, x: 8 }}
@@ -202,8 +202,8 @@ export default function Couple() {
         </motion.div>
 
         {/* Pria -> Teks Kiri, Foto Kanan on desktop */}
-        <div className="flex flex-col md:flex-row-reverse items-center gap-8 md:gap-20 w-full">
-          <div className="shrink-0 scale-110 md:scale-150">
+        <div className="flex flex-col md:flex-row-reverse items-center gap-6 md:gap-16 w-full mb-16 md:mb-24">
+          <div className="shrink-0">
             <CircularFrame isReversed image={priaPhoto} onUpload={(e) => handlePhotoUpload(e, setPriaPhoto, 'priaPhoto')}>
               {groomInitial}
             </CircularFrame>
@@ -215,10 +215,10 @@ export default function Couple() {
             transition={{ duration: 1.2, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
             className="text-center md:text-right flex-1 px-4"
           >
-            <h4 className="text-gold font-serif italic text-sm md:text-lg mb-4 tracking-[0.3em] font-black uppercase drop-shadow-sm">Mempelai Pria</h4>
-            <h3 className="font-serif text-3xl md:text-5xl text-zinc-900 mb-8 font-black drop-shadow-md leading-none tracking-tighter italic">{groomFull}</h3>
-            <div className="w-20 h-1 bg-gradient-to-l from-gold/40 to-transparent mb-8 hidden md:block ms-auto rounded-full"></div>
-            <p className="text-base md:text-lg min-h-[3em] text-zinc-600 font-bold leading-relaxed italic tracking-tight mb-8" dangerouslySetInnerHTML={{ __html: groomDesc ? groomDesc.replace(/\\n/g, '<br/>') : '' }} />
+            <h4 className="text-gold font-serif italic text-xs md:text-sm mb-3 tracking-[0.3em] font-black uppercase drop-shadow-sm">Mempelai Pria</h4>
+            <h3 className="font-serif text-3xl md:text-5xl text-zinc-900 mb-4 font-black drop-shadow-md leading-tight tracking-tighter italic">{groomFull}</h3>
+            <div className="w-16 h-1 bg-gradient-to-l from-gold/40 to-transparent mb-4 hidden md:block ms-auto rounded-full"></div>
+            <p className="text-sm md:text-base min-h-[3em] text-zinc-600 font-bold leading-relaxed italic tracking-tight mb-6" dangerouslySetInnerHTML={{ __html: groomDesc ? groomDesc.replace(/\\n/g, '<br/>') : '' }} />
             
             <motion.a
               whileHover={{ scale: 1.05, x: -8 }}
