@@ -1,17 +1,38 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { LogOut, Image as ImageIcon, Type, FileText, MessageCircle, Upload } from 'lucide-react';
+import { LogOut, Image as ImageIcon, Type, FileText, MessageCircle, Upload, Database, Wifi, WifiOff } from 'lucide-react';
 import { useAppImage, useGalleryImages, useAppText, useAppAudio, uploadFile } from '../../lib/store';
-import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
-import { db } from '../../lib/firebase';
+import { collection, onSnapshot, query, orderBy, deleteDoc, doc, updateDoc } from 'firebase/firestore';
+import { db, testFirebaseConnection } from '../../lib/firebase';
 
 export default function AdminDashboard({ role, onLogout }: { role: string; onLogout: () => void }) {
   const [activeTab, setActiveTab] = useState('photos');
   const [isUploading, setIsUploading] = useState<string | null>(null);
+  const [uploadProgress, setUploadProgress] = useState<{ [key: string]: { progress: number, stage: string, error?: string } }>({});
+  const [fireBaseStatus, setFireBaseStatus] = useState<'checking' | 'connected' | 'disconnected'>('checking');
   
-  const [coverPhoto, setCoverPhoto] = useAppImage('coverPhoto', '/cover-bg.jpg');
-  const [priaPhoto, setPriaPhoto] = useAppImage('priaPhoto', 'https://images.unsplash.com/photo-1550064560-6dd11a91e55b?auto=format&fit=crop&q=80&w=600');
-  const [wanitaPhoto, setWanitaPhoto] = useAppImage('wanitaPhoto', 'https://images.unsplash.com/photo-1541250848049-b4f714612024?auto=format&fit=crop&q=80&w=600');
+  useEffect(() => {
+    const checkConn = async () => {
+      const ok = await testFirebaseConnection();
+      setFireBaseStatus(ok ? 'connected' : 'disconnected');
+    };
+    checkConn();
+
+    const handleProgress = (e: any) => {
+      const { path, progress, stage, error } = e.detail;
+      const key = path.split('/')[1]?.split('_')[0] || path.split('/')[0];
+      setUploadProgress(prev => ({
+        ...prev,
+        [key]: { progress, stage, error }
+      }));
+    };
+    window.addEventListener('uploadProgress', handleProgress as EventListener);
+    return () => window.removeEventListener('uploadProgress', handleProgress as EventListener);
+  }, []);
+
+  const [coverPhoto, setCoverPhoto] = useAppImage('coverPhoto', 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=2000');
+  const [priaPhoto, setPriaPhoto] = useAppImage('priaPhoto', 'https://images.unsplash.com/photo-1507679799987-c73774573b0a?auto=format&fit=crop&q=80&w=1000');
+  const [wanitaPhoto, setWanitaPhoto] = useAppImage('wanitaPhoto', 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=1000');
   const [galleryPhotos, setGalleryPhotos] = useGalleryImages();
 
   // Content state hooks
@@ -46,8 +67,8 @@ export default function AdminDashboard({ role, onLogout }: { role: string; onLog
   const stats = {
     total: wishes.length,
     hadir: wishes.filter(w => w.attendance === 'Hadir').length,
-    ragu: wishes.filter(w => w.attendance === 'Ragu-ragu').length,
-    tidak: wishes.filter(w => w.attendance === 'Tidak Hadir').length,
+    ragu: wishes.filter(w => w.attendance === 'Ragu-ragu' || w.attendance === 'Mungkin').length,
+    tidak: wishes.filter(w => w.attendance === 'Tidak Hadir' || w.attendance === 'Berhalangan').length,
   };
   const [event1Title, setEvent1Title] = useAppText('event1Title', 'Akad Nikah');
   const [event1Time, setEvent1Time] = useAppText('event1Time', '08.00 WIB - Selesai');
@@ -73,8 +94,8 @@ export default function AdminDashboard({ role, onLogout }: { role: string; onLog
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, key: string, setter: (data: string) => void) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        alert('Maaf, ukuran file terlalu besar (maksimal 5MB). Silahkan kompres foto Anda atau gunakan foto lain.');
+      if (file.size > 15 * 1024 * 1024) {
+        alert('Maaf, ukuran file terlalu besar (maksimal 15MB).');
         return;
       }
       setIsUploading(key);
@@ -83,12 +104,14 @@ export default function AdminDashboard({ role, onLogout }: { role: string; onLog
         await setter(url);
         setSaveStatus('saved');
         setTimeout(() => setSaveStatus('idle'), 3000);
+        setIsUploading(null); // Clear on success
       } catch (err) {
         console.error(err);
+        // Note: The overlay itself handles displaying the error message now via events
+        // but we keep the alert as a fallback
         alert('Gagal mengupload: ' + (err instanceof Error ? err.message : 'Silahkan cek koneksi internet Anda'));
-      } finally {
-        setIsUploading(null);
       }
+      // removed finally { setIsUploading(null) } to allow error UI to persist
     }
   };
 
@@ -97,9 +120,9 @@ export default function AdminDashboard({ role, onLogout }: { role: string; onLog
     if (files.length === 0) return;
     
     // Check total size
-    const oversized = files.some(f => f.size > 5 * 1024 * 1024);
+    const oversized = files.some(f => f.size > 15 * 1024 * 1024);
     if (oversized) {
-      alert('Beberapa file melebihi batas 5MB. Silahkan pilih file yang lebih kecil.');
+      alert('Beberapa file melebihi batas 15MB.');
       return;
     }
 
@@ -110,12 +133,12 @@ export default function AdminDashboard({ role, onLogout }: { role: string; onLog
       await setGalleryPhotos([...galleryPhotos, ...urls]);
       setSaveStatus('saved');
       setTimeout(() => setSaveStatus('idle'), 3000);
+      setIsUploading(null); // Clear on success
     } catch (err) {
       console.error(err);
-      alert('Gallery upload failed');
-    } finally {
-      setIsUploading(null);
+      alert('Gallery upload failed: ' + (err instanceof Error ? err.message : 'Check connection'));
     }
+    // removed finally { setIsUploading(null) }
   };
 
   const removeGalleryPhoto = async (index: number) => {
@@ -129,13 +152,12 @@ export default function AdminDashboard({ role, onLogout }: { role: string; onLog
   const deleteWish = async (id: string) => {
     if (!window.confirm('Hapus pesan ini?')) return;
     try {
-      const { deleteDoc, doc } = await import('firebase/firestore');
       await deleteDoc(doc(db, 'wishes', id));
       setSaveStatus('saved');
       setTimeout(() => setSaveStatus('idle'), 3000);
     } catch (err) {
       console.error(err);
-      alert('Delete failed');
+      alert('Gagal menghapus pesan');
     }
   };
 
@@ -143,7 +165,6 @@ export default function AdminDashboard({ role, onLogout }: { role: string; onLog
   const handleUpdateWish = async () => {
     if (!editingWish) return;
     try {
-      const { updateDoc, doc } = await import('firebase/firestore');
       await updateDoc(doc(db, 'wishes', editingWish.id), {
         name: editingWish.name,
         message: editingWish.message,
@@ -154,7 +175,7 @@ export default function AdminDashboard({ role, onLogout }: { role: string; onLog
       setTimeout(() => setSaveStatus('idle'), 3000);
     } catch (err) {
       console.error(err);
-      alert('Update failed');
+      alert('Gagal mengupdate pesan');
     }
   };
 
@@ -167,13 +188,8 @@ export default function AdminDashboard({ role, onLogout }: { role: string; onLog
   };
 
   useEffect(() => {
-    // Force clear loading if it hangs for more than 30s
-    if (isUploading) {
-      const timer = setTimeout(() => {
-        setIsUploading(null);
-      }, 30000);
-      return () => clearTimeout(timer);
-    }
+    // No automatic clearing anymore - let the upload finish or fail naturally
+    // The store.ts has a 5-minute timeout now.
   }, [isUploading]);
   
   return (
@@ -187,7 +203,27 @@ export default function AdminDashboard({ role, onLogout }: { role: string; onLog
           </div>
         </div>
 
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-3 md:gap-6">
+          <div className="flex items-center gap-2 md:border-r md:border-zinc-100 md:pr-6 md:mr-6">
+             <div className={`w-1.5 h-1.5 rounded-full ${fireBaseStatus === 'connected' ? 'bg-green-500' : fireBaseStatus === 'disconnected' ? 'bg-rose-500' : 'bg-zinc-300 animate-pulse'}`}></div>
+             <div className="flex flex-col">
+               <span className={`text-[8px] md:text-[9px] font-black uppercase tracking-widest ${fireBaseStatus === 'connected' ? 'text-green-600' : fireBaseStatus === 'disconnected' ? 'text-rose-600' : 'text-zinc-400'}`}>
+                 {fireBaseStatus === 'connected' ? 'Synced' : fireBaseStatus === 'disconnected' ? 'Sync Error' : 'Syncing'}
+               </span>
+               {fireBaseStatus === 'disconnected' && (
+                 <button 
+                   onClick={() => {
+                     setFireBaseStatus('checking');
+                     testFirebaseConnection().then(ok => setFireBaseStatus(ok ? 'connected' : 'disconnected'));
+                   }}
+                   className="text-[7px] font-bold text-zinc-400 hover:text-zinc-900 border-b border-zinc-200 w-fit leading-none mt-0.5"
+                 >
+                   RETRY
+                 </button>
+               )}
+             </div>
+          </div>
+
           <AnimatePresence>
             {saveStatus !== 'idle' && (
               <motion.div
@@ -383,16 +419,54 @@ export default function AdminDashboard({ role, onLogout }: { role: string; onLog
                     <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 mb-4 italic">Foto Cover</h3>
                     <div className="aspect-[3/4] bg-zinc-100 rounded-xl overflow-hidden relative group border border-zinc-200 shadow-sm mb-3">
                       {coverPhoto ? (
-                        <img src={coverPhoto} className="w-full h-full object-cover transition duration-500 group-hover:scale-110" />
+                        <img 
+                          src={coverPhoto} 
+                          referrerPolicy="no-referrer"
+                          className="w-full h-full object-cover transition duration-500 group-hover:scale-110" 
+                          onError={(e) => (e.currentTarget.src = 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=800')} 
+                        />
                       ) : (
                         <div className="w-full h-full flex flex-col items-center justify-center text-zinc-300">
                           <ImageIcon size={40} strokeWidth={1} />
                         </div>
                       )}
                       {isUploading === 'coverPhoto' && (
-                        <div className="absolute inset-0 bg-white/90 backdrop-blur-sm flex flex-col items-center justify-center">
-                          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-zinc-800 mb-2"></div>
-                          <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">Uploading...</span>
+                        <div className="absolute inset-0 bg-white/95 backdrop-blur-sm flex flex-col items-center justify-center p-4">
+                          {uploadProgress['coverPhoto']?.stage === 'Error' ? (
+                            <div className="text-center">
+                              <p className="text-rose-500 text-[10px] font-black uppercase mb-3 px-2 line-clamp-2">
+                                {uploadProgress['coverPhoto']?.error || 'Upload Gagal'}
+                              </p>
+                              <button 
+                                onClick={() => setIsUploading(null)}
+                                className="text-[9px] font-black uppercase tracking-widest text-zinc-400 hover:text-zinc-900 border border-zinc-200 px-3 py-1 rounded-full transition-colors"
+                              >
+                                Tutup
+                              </button>
+                            </div>
+                          ) : (
+                            <>
+                              <div className="w-full h-1 bg-zinc-100 rounded-full overflow-hidden mb-3">
+                                <motion.div 
+                                  initial={{ width: 0 }}
+                                  animate={{ width: `${uploadProgress['coverPhoto']?.progress || 0}%` }}
+                                  className="h-full bg-zinc-800"
+                                />
+                              </div>
+                              <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 mb-2">
+                                {uploadProgress['coverPhoto']?.stage || 'Uploading'} {uploadProgress['coverPhoto']?.progress || 0}%
+                              </span>
+                              <button 
+                                onClick={() => {
+                                  // This will trigger a cleanup/cancellation indirectly if we refresh
+                                  setIsUploading(null);
+                                }}
+                                className="text-[8px] font-bold text-zinc-400 hover:text-zinc-600 underline"
+                              >
+                                BATALKAN
+                              </button>
+                            </>
+                          )}
                         </div>
                       )}
                     </div>
@@ -409,16 +483,51 @@ export default function AdminDashboard({ role, onLogout }: { role: string; onLog
                     <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 mb-4 italic">Mempelai Pria</h3>
                     <div className="aspect-square bg-zinc-100 rounded-xl overflow-hidden relative group border border-zinc-200 shadow-sm mb-4">
                       {priaPhoto ? (
-                        <img src={priaPhoto} className="w-full h-full object-cover transition duration-700 group-hover:scale-110" />
+                        <img 
+                          src={priaPhoto} 
+                          referrerPolicy="no-referrer"
+                          className="w-full h-full object-cover transition duration-700 group-hover:scale-110" 
+                          onError={(e) => (e.currentTarget.src = 'https://images.unsplash.com/photo-1507679799987-c73774573b0a?auto=format&fit=crop&q=80&w=800')}
+                        />
                       ) : (
                         <div className="w-full h-full flex flex-col items-center justify-center text-zinc-300">
                            <ImageIcon size={40} strokeWidth={1} />
                         </div>
                       )}
                       {isUploading === 'priaPhoto' && (
-                        <div className="absolute inset-0 bg-white/90 backdrop-blur-sm flex flex-col items-center justify-center">
-                          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-zinc-800 mb-2"></div>
-                          <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">Uploading...</span>
+                        <div className="absolute inset-0 bg-white/95 backdrop-blur-sm flex flex-col items-center justify-center p-4">
+                          {uploadProgress['priaPhoto']?.stage === 'Error' ? (
+                            <div className="text-center">
+                              <p className="text-rose-500 text-[10px] font-black uppercase mb-3 px-2 line-clamp-2">
+                                {uploadProgress['priaPhoto']?.error || 'Upload Gagal'}
+                              </p>
+                              <button 
+                                onClick={() => setIsUploading(null)}
+                                className="text-[9px] font-black uppercase tracking-widest text-zinc-400 hover:text-zinc-900 border border-zinc-200 px-3 py-1 rounded-full transition-colors"
+                              >
+                                Tutup
+                              </button>
+                            </div>
+                          ) : (
+                            <>
+                              <div className="w-full h-1 bg-zinc-100 rounded-full overflow-hidden mb-3">
+                                <motion.div 
+                                  initial={{ width: 0 }}
+                                  animate={{ width: `${uploadProgress['priaPhoto']?.progress || 0}%` }}
+                                  className="h-full bg-zinc-800"
+                                />
+                              </div>
+                              <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 mb-2">
+                                {uploadProgress['priaPhoto']?.stage || 'Uploading'} {uploadProgress['priaPhoto']?.progress || 0}%
+                              </span>
+                              <button 
+                                onClick={() => setIsUploading(null)}
+                                className="text-[8px] font-bold text-zinc-400 hover:text-zinc-600 underline"
+                              >
+                                BATALKAN
+                              </button>
+                            </>
+                          )}
                         </div>
                       )}
                     </div>
@@ -435,16 +544,51 @@ export default function AdminDashboard({ role, onLogout }: { role: string; onLog
                     <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 mb-4 italic">Mempelai Wanita</h3>
                     <div className="aspect-square bg-zinc-100 rounded-xl overflow-hidden relative group border border-zinc-200 shadow-sm mb-4">
                       {wanitaPhoto ? (
-                         <img src={wanitaPhoto} className="w-full h-full object-cover transition duration-700 group-hover:scale-110" />
+                        <img 
+                           src={wanitaPhoto} 
+                           referrerPolicy="no-referrer"
+                           className="w-full h-full object-cover transition duration-700 group-hover:scale-110" 
+                           onError={(e) => (e.currentTarget.src = 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=800')}
+                         />
                       ) : (
                          <div className="w-full h-full flex flex-col items-center justify-center text-zinc-300">
                            <ImageIcon size={40} strokeWidth={1} />
                         </div>
                       )}
                       {isUploading === 'wanitaPhoto' && (
-                        <div className="absolute inset-0 bg-white/90 backdrop-blur-sm flex flex-col items-center justify-center">
-                          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-zinc-800 mb-2"></div>
-                          <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">Uploading...</span>
+                        <div className="absolute inset-0 bg-white/95 backdrop-blur-sm flex flex-col items-center justify-center p-4">
+                          {uploadProgress['wanitaPhoto']?.stage === 'Error' ? (
+                            <div className="text-center">
+                              <p className="text-rose-500 text-[10px] font-black uppercase mb-3 px-2 line-clamp-2">
+                                {uploadProgress['wanitaPhoto']?.error || 'Upload Gagal'}
+                              </p>
+                              <button 
+                                onClick={() => setIsUploading(null)}
+                                className="text-[9px] font-black uppercase tracking-widest text-zinc-400 hover:text-zinc-900 border border-zinc-200 px-3 py-1 rounded-full transition-colors"
+                              >
+                                Tutup
+                              </button>
+                            </div>
+                          ) : (
+                            <>
+                              <div className="w-full h-1 bg-zinc-100 rounded-full overflow-hidden mb-3">
+                                <motion.div 
+                                  initial={{ width: 0 }}
+                                  animate={{ width: `${uploadProgress['wanitaPhoto']?.progress || 0}%` }}
+                                  className="h-full bg-zinc-800"
+                                />
+                              </div>
+                              <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 mb-2">
+                                {uploadProgress['wanitaPhoto']?.stage || 'Uploading'} {uploadProgress['wanitaPhoto']?.progress || 0}%
+                              </span>
+                              <button 
+                                onClick={() => setIsUploading(null)}
+                                className="text-[8px] font-bold text-zinc-400 hover:text-zinc-600 underline"
+                              >
+                                BATALKAN
+                              </button>
+                            </>
+                          )}
                         </div>
                       )}
                     </div>

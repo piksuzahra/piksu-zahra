@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { motion } from 'motion/react';
 import { Instagram } from 'lucide-react';
 import SectionTitle from '../SectionTitle';
-import { useAppImage, useAppText } from '../../lib/store';
+import { useAppImage, useAppText, uploadFile } from '../../lib/store';
 import DecorativeSVG from '../DecorativeSVG';
 
 const CircularFrame = ({ children, isReversed, image, onUpload }: { children: ReactNode, isReversed?: boolean, image?: string | null, onUpload?: (e: React.ChangeEvent<HTMLInputElement>) => void }) => (
@@ -67,7 +67,12 @@ const CircularFrame = ({ children, isReversed, image, onUpload }: { children: Re
       <input type="file" className="hidden" accept="image/*" onChange={onUpload} />
       <div className="w-full h-full rounded-full overflow-hidden relative">
         {image ? (
-          <img src={image} className="w-full h-full object-cover pointer-events-none group-hover:scale-110 transition-transform duration-[4s] ease-out" />
+          <img 
+            src={image} 
+            referrerPolicy="no-referrer"
+            onError={(e) => (e.currentTarget.src = isReversed ? 'https://images.unsplash.com/photo-1507679799987-c73774573b0a?auto=format&fit=crop&q=80&w=800' : 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=800')}
+            className="w-full h-full object-cover pointer-events-none group-hover:scale-110 transition-transform duration-[4s] ease-out" 
+          />
         ) : (
           <div className={`w-full h-full bg-gradient-to-tr ${isReversed ? 'from-zinc-100 to-sage/10' : 'from-zinc-100 to-gold/10'} flex justify-center items-center pointer-events-none`}>
              <motion.div 
@@ -95,8 +100,8 @@ const CircularFrame = ({ children, isReversed, image, onUpload }: { children: Re
 );
 
 export default function Couple() {
-  const [priaPhoto, setPriaPhoto] = useAppImage('priaPhoto', 'https://images.unsplash.com/photo-1550064560-6dd11a91e55b?auto=format&fit=crop&q=80&w=600');
-  const [wanitaPhoto, setWanitaPhoto] = useAppImage('wanitaPhoto', 'https://images.unsplash.com/photo-1541250848049-b4f714612024?auto=format&fit=crop&q=80&w=600');
+  const [priaPhoto, setPriaPhoto] = useAppImage('priaPhoto', 'https://images.unsplash.com/photo-1507679799987-c73774573b0a?auto=format&fit=crop&q=80&w=1000');
+  const [wanitaPhoto, setWanitaPhoto] = useAppImage('wanitaPhoto', 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=1000');
 
   const [groomName] = useAppText('groomName', 'Piksu');
   const [brideName] = useAppText('brideName', 'Zahra');
@@ -110,25 +115,16 @@ export default function Couple() {
   const groomInitial = groomName ? groomName[0] : 'P';
   const brideInitial = brideName ? brideName[0] : 'Z';
 
-  const handlePriaUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>, setter: (url: string) => void, key: string) => {
     const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPriaPhoto(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleWanitaUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setWanitaPhoto(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      try {
+        const url = await uploadFile(file, `app/${key}_${Date.now()}`);
+        await setter(url);
+      } catch (err) {
+        console.error(err);
+        alert('Gagal mengupload: ' + (err instanceof Error ? err.message : 'Cek koneksi internet Anda'));
+      }
     }
   };
 
@@ -146,7 +142,7 @@ export default function Couple() {
         {/* Wanita -> Teks Kanan, Foto Kiri on desktop */}
         <div className="flex flex-col md:flex-row items-center gap-8 md:gap-20 w-full mb-20 md:mb-40">
           <div className="shrink-0 scale-110 md:scale-150">
-            <CircularFrame image={wanitaPhoto} onUpload={handleWanitaUpload}>
+            <CircularFrame image={wanitaPhoto} onUpload={(e) => handlePhotoUpload(e, setWanitaPhoto, 'wanitaPhoto')}>
               {brideInitial}
             </CircularFrame>
           </div>
@@ -208,7 +204,7 @@ export default function Couple() {
         {/* Pria -> Teks Kiri, Foto Kanan on desktop */}
         <div className="flex flex-col md:flex-row-reverse items-center gap-8 md:gap-20 w-full">
           <div className="shrink-0 scale-110 md:scale-150">
-            <CircularFrame isReversed image={priaPhoto} onUpload={handlePriaUpload}>
+            <CircularFrame isReversed image={priaPhoto} onUpload={(e) => handlePhotoUpload(e, setPriaPhoto, 'priaPhoto')}>
               {groomInitial}
             </CircularFrame>
           </div>

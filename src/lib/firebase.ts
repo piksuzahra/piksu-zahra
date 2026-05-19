@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { getAuth, signInAnonymously, onAuthStateChanged, User } from 'firebase/auth';
 import { getFirestore, doc, getDocFromServer } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import firebaseConfig from '../../firebase-applet-config.json';
@@ -9,18 +9,38 @@ export const db = getFirestore(app, (firebaseConfig as any).firestoreDatabaseId)
 export const auth = getAuth(app);
 export const storage = getStorage(app);
 
+// Authentication status promise
+export const authReady = new Promise<User | null>((resolve) => {
+  // Try to sign in anonymously if not already signed in
+  signInAnonymously(auth)
+    .then((credential) => {
+      console.log("Firebase Auth State: Authenticated as", credential.user.uid);
+      resolve(credential.user);
+    })
+    .catch((err) => {
+      console.warn('Anonymous auth failed:', err);
+      // Fallback to checking state in case we're offline but cached
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        resolve(user);
+        unsubscribe();
+      });
+    });
+});
+
 // Test connection and log errors
-async function testConnection() {
+export async function testFirebaseConnection() {
   try {
+    // Wait for auth first
+    await authReady;
     await getDocFromServer(doc(db, 'test-connection', 'status'));
     console.log("Firebase connected successfully");
+    return true;
   } catch (error: any) {
-    if (error?.message?.includes('offline') || error?.code === 'unavailable') {
-       console.error("Firebase is offline. This usually means the project configuration is incorrect or the database is not yet ready.");
-    }
+    console.error("Firebase connection test failed:", error);
+    return false;
   }
 }
-testConnection();
+testFirebaseConnection();
 
 export enum OperationType {
   CREATE = 'create',

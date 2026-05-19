@@ -161,18 +161,18 @@ export default function SenderDashboard({ role, onLogout }: { role: string; onLo
                     <div className="flex gap-2 self-end sm:self-auto items-center">
                       <button 
                         onClick={() => setEditingGuest({ id: guest.id, name: guest.name })}
-                        className="p-2 text-zinc-300 hover:text-zinc-600 rounded-lg transition"
-                        title="Edit Guest"
+                        className="p-2 text-zinc-400 hover:text-zinc-800 bg-white border border-zinc-200 rounded-lg transition shadow-sm"
+                        title="Edit Tamu"
                       >
                         <Plus size={16} className="rotate-45" />
                       </button>
                       <button 
                         onClick={() => deleteGuest(guest.id)}
-                       className="p-2 text-zinc-300 hover:text-red-500 rounded-lg transition"
-                       title="Delete Guest"
-                     >
-                       <Trash2 size={18} />
-                     </button>
+                        className="p-2 text-zinc-400 hover:text-rose-500 bg-white border border-zinc-200 rounded-lg transition shadow-sm"
+                        title="Hapus Tamu"
+                      >
+                        <Trash2 size={18} />
+                      </button>
                      <button 
                        onClick={() => copyLink(guest.name, guest.id)}
                        className="p-2 text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100 rounded-lg transition"

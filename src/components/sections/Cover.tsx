@@ -12,7 +12,7 @@ export default function Cover({ onOpen }: { onOpen: () => void }) {
   // Try to get recipient name from URL parameters, fallback to 'Tamu Undangan'
   const recipientName = new URLSearchParams(window.location.search).get('to') || 'Tamu Undangan';
   
-  const [coverPhoto, setCoverPhoto] = useAppImage('coverPhoto', '/cover-bg.jpg');
+  const [coverPhoto, setCoverPhoto] = useAppImage('coverPhoto', 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=2000');
   const [groomName] = useAppText('groomName', 'Piksu');
   const [brideName] = useAppText('brideName', 'Zahra');
   const [weddingDate] = useAppText('weddingDate', '2026-07-05');
@@ -26,13 +26,17 @@ export default function Cover({ onOpen }: { onOpen: () => void }) {
   const handleCoverUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      if (file.size > 15 * 1024 * 1024) {
+        alert('File terlalu besar (maksimal 15MB)');
+        return;
+      }
       setIsUploading(true);
       try {
         const url = await uploadFile(file, `app/coverPhoto_${Date.now()}`);
-        setCoverPhoto(url);
+        await setCoverPhoto(url);
       } catch (err) {
         console.error(err);
-        alert('Upload failed');
+        alert('Upload gagal. Coba lagi atau gunakan file lebih kecil.');
       } finally {
         setIsUploading(false);
       }
