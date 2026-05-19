@@ -15,10 +15,10 @@ export default function SenderDashboard({ role, onLogout }: { role: string; onLo
   const [isAdding, setIsAdding] = useState(false);
 
   useEffect(() => {
+    // Only use where() to avoid requiring a composite index in Firestore
     const q = query(
       collection(db, 'guests'), 
-      where('role', '==', role),
-      orderBy('created_at', 'desc')
+      where('role', '==', role)
     );
     
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -26,6 +26,12 @@ export default function SenderDashboard({ role, onLogout }: { role: string; onLo
         id: doc.id,
         ...doc.data()
       })) as any[];
+      // Sort in memory to avoid index requirements
+      data.sort((a, b) => {
+        const timeA = a.created_at?.toMillis?.() || 0;
+        const timeB = b.created_at?.toMillis?.() || 0;
+        return timeB - timeA;
+      });
       setGuests(data);
     }, (error) => {
       handleFirestoreError(error, OperationType.LIST, 'guests');
@@ -83,8 +89,8 @@ export default function SenderDashboard({ role, onLogout }: { role: string; onLo
     // Replace placeholders
     template = template.replace(/\[NAMA\]/g, `*${name}*`).replace(/\[LINK\]/g, link);
 
-    // Use api.whatsapp.com for better fallback support
-    return `https://api.whatsapp.com/send?text=${encodeURIComponent(template)}`;
+    // Use wa.me for universal support across mobile and web
+    return `https://wa.me/?text=${encodeURIComponent(template)}`;
   };
 
   const handleSend = async (id: string, name: string) => {
