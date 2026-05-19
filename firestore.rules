@@ -1,0 +1,55 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      // For now, let's allow the owner of the project or anyone with a specific email
+      // In a real app, you'd check a collection of admins
+      return isSignedIn() && (
+        request.auth.token.email == "aldianobrantario10.id@gmail.com"
+      );
+    }
+
+    function isValidWish(data) {
+      return data.keys().hasAll(['name', 'message', 'attendance', 'created_at']) &&
+             data.keys().size() == 4 &&
+             data.name is string && data.name.size() <= 100 &&
+             data.message is string && data.message.size() <= 1000 &&
+             data.attendance is string &&
+             (data.created_at == null || data.created_at is timestamp);
+    }
+
+    function isValidConfig(data) {
+       return data.keys().hasAll(['value']) &&
+              data.keys().size() == 1 &&
+              data.value is string;
+    }
+
+    // Wishes collection
+    match /wishes/{wishId} {
+      allow read: if true;
+      allow create: if isValidWish(request.resource.data);
+      allow update, delete: if isAdmin();
+    }
+
+    // Config collection
+    match /config/{configId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    // Test connection path
+    match /test-connection/{status} {
+      allow read: if true;
+    }
+  }
+}

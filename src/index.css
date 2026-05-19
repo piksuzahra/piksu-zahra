@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-content), "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-title), "DM Serif Display", ui-serif, system-ui, serif;
+  --font-script: var(--font-subtitle), "Great Vibes", cursive;
+  --color-sage: var(--theme-sage, #82947a);
+  --color-rose: var(--theme-rose, #c28e8e);
+  --color-gold: var(--theme-gold, #c5a059);
+  --color-gold-dark: #a68434;
+  --color-terracotta: var(--theme-terracotta, #b8624d);
+  --color-cream: #fdfaf5;
+  --radius-minimal: 0.5rem;
+  --radius-premium: 0.75rem;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #fdfaf5;
+  color: #2d2d2d;
+  overflow-x: hidden;
+  @apply selection:bg-gold/20;
+}
+
+.glass-card {
+  @apply bg-white/80 backdrop-blur-3xl border border-white/50 shadow-[0_20px_50px_rgba(0,0,0,0.05)];
+  border-radius: var(--radius-premium);
+}
+
+.gold-glass {
+  @apply bg-black/85 backdrop-blur-2xl border border-white/10 shadow-[0_30px_60px_rgba(0,0,0,0.4)];
+  border-radius: var(--radius-premium);
+}
+
+.premium-button {
+  @apply relative overflow-hidden transition-all duration-500 active:scale-95 shadow-[0_10px_20px_rgba(0,0,0,0.1)];
+  border-radius: var(--radius-minimal);
+}
+
+.premium-input {
+  @apply bg-white/50 border border-zinc-200/50 px-6 py-5 focus:outline-none focus:ring-4 focus:ring-gold/10 focus:border-gold/30 transition-all text-zinc-900 font-bold placeholder-zinc-400;
+  border-radius: var(--radius-minimal);
+}
+
+.shine-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.shine-effect::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 50%; height: 100%;
+  background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+  transform: skewX(-20deg);
+  animation: shine 6s infinite;
+  pointer-events: none;
+  z-index: 2;
+}
+
+@keyframes shine {
+  0% { left: -100%; }
+  25% { left: 200%; }
+  100% { left: 200%; }
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(197, 160, 89, 0.2);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(197, 160, 89, 0.4);
+}

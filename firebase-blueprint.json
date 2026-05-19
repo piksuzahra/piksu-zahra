@@ -1,0 +1,35 @@
+{
+  "entities": {
+    "Wish": {
+      "title": "Wish",
+      "description": "A wedding wish from a guest",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Guest name" },
+        "message": { "type": "string", "description": "Wedding message" },
+        "attendance": { "type": "string", "description": "Attendance status (Hadir/Tidak Hadir/Ragu-ragu)" },
+        "created_at": { "type": "string", "format": "date-time", "description": "Submission time" }
+      },
+      "required": ["name", "message", "attendance", "created_at"]
+    },
+    "AppConfig": {
+      "title": "AppConfig",
+      "description": "Application configuration settings",
+      "type": "object",
+      "properties": {
+        "value": { "type": "string", "description": "The value for the configuration key" }
+      },
+      "required": ["value"]
+    }
+  },
+  "firestore": {
+    "/wishes/{wishId}": {
+      "schema": "Wish",
+      "description": "Collection of wedding wishes"
+    },
+    "/config/{configId}": {
+      "schema": "AppConfig",
+      "description": "Collection of app settings"
+    }
+  }
+}

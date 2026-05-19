@@ -1,0 +1,8 @@
+{
+  "name": "Remix: Undangan Digital Zahra \u0026 Piksu",
+  "description": "Undangan digital premium dengan desain elegan untuk pesta pernikahan Zahra \u0026 Piksu.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
